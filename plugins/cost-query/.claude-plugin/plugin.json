@@ -1,0 +1,20 @@
+{
+  "name": "cost-query",
+  "description": "Developer-facing query surface. /nook-cost (current spend), /nook-forecast (L1 projection), /nook-attribute (break down by plugin/tier/model), /nook-report (dark-themed PDF audit with Opus anomaly narrative). Skill-invoked only — no hooks. Relies on state written by cost-tracker, budget-watcher, nook-learning.",
+  "version": "0.1.0",
+  "author": {
+    "name": "enchanted-plugins"
+  },
+  "license": "MIT",
+  "keywords": [
+    "slash-commands",
+    "developer-ux",
+    "reporting",
+    "pdf-audit"
+  ],
+  "skills": [
+    "./skills/cost-display/",
+    "./skills/generate-report/"
+  ],
+  "agents": "./agents/"
+}
