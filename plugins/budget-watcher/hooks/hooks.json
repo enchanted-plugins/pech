@@ -1,0 +1,22 @@
+{
+  "description": "budget-watcher hooks — check thresholds + run anomaly detection after each ledger write. Advisory-only: fires bus events, does not block. Hard-budget enforcement is opt-in via NOOK_HARD_BUDGET env and routes through weaver-gate separately.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/shared/scripts/check_budget.py",
+            "timeout": 2
+          },
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/shared/scripts/detect_anomaly.py",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  }
+}
