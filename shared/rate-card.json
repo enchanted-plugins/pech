@@ -1,0 +1,43 @@
+{
+  "effective_from": "2026-04-19",
+  "effective_until": null,
+  "currency": "USD",
+  "models": {
+    "claude-opus-4-7": {
+      "input_rate_per_mtok": 15.00,
+      "output_rate_per_mtok": 75.00
+    },
+    "claude-opus-4-6": {
+      "input_rate_per_mtok": 15.00,
+      "output_rate_per_mtok": 75.00
+    },
+    "claude-sonnet-4-6": {
+      "input_rate_per_mtok": 3.00,
+      "output_rate_per_mtok": 15.00
+    },
+    "claude-sonnet-4-5": {
+      "input_rate_per_mtok": 3.00,
+      "output_rate_per_mtok": 15.00
+    },
+    "claude-haiku-4-5": {
+      "input_rate_per_mtok": 0.80,
+      "output_rate_per_mtok": 4.00
+    }
+  },
+  "modifiers": {
+    "cache_write_modifier": 1.25,
+    "cache_read_modifier": 0.10,
+    "batch_discount": 0.50
+  },
+  "fallback_model_rate": {
+    "input_rate_per_mtok": 3.00,
+    "output_rate_per_mtok": 15.00,
+    "note": "Sonnet-equivalent rate used when a model ID is absent from the rates table. Rows computed against this fallback are tagged rate_card_stale:true so forecasts flag the uncertainty."
+  },
+  "_meta": {
+    "source": "https://www.anthropic.com/pricing",
+    "verified_by": "manual seed — replace with CI nightly refresh output",
+    "last_verified": "2026-04-19",
+    "note": "This is a seed card. Confirm against Anthropic's published pricing before production use. The nightly CI job at .github/workflows/refresh-rate-card.yml replaces this with scraped-and-verified values."
+  }
+}
