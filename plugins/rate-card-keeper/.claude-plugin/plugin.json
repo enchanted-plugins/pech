@@ -1,0 +1,20 @@
+{
+  "name": "rate-card-keeper",
+  "description": "Holds the committed rate-card.json (per-model input/output rates, prompt-cache write 1.25× modifier, cache read 0.1× modifier, batch 0.5× discount). Validates schema on SessionStart. Fires staleness warning if effective_from > 90 days old. Nightly CI refresh via GitHub Actions PR — never fetched at runtime.",
+  "version": "0.1.0",
+  "author": {
+    "name": "enchanted-plugins"
+  },
+  "license": "MIT",
+  "keywords": [
+    "rate-card",
+    "pricing",
+    "staleness",
+    "schema-validation"
+  ],
+  "skills": [
+    "./skills/load-rate-card/",
+    "./skills/refresh-rate-card/"
+  ],
+  "agents": "./agents/"
+}

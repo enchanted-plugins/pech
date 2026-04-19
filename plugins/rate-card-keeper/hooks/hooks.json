@@ -1,0 +1,16 @@
+{
+  "description": "rate-card-keeper hooks — load rate card at SessionStart, validate schema, emit staleness warning. Advisory by default; fails hard only when rate card is > 180 days stale.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/shared/scripts/load_rate_card.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
