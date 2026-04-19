@@ -1,0 +1,48 @@
+{
+  "name": "nook",
+  "owner": {
+    "name": "enchanted-plugins"
+  },
+  "metadata": {
+    "description": "Cost ledger for AI-assisted development. Attributes every token, prompt-cache hit, and tool-use turn to the plugin / sub-plugin / agent tier that fired it. Forecasts spend, fires budget thresholds, surfaces cache waste. Phase 1 plugin #5.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "full",
+      "source": "./plugins/full",
+      "description": "Meta-plugin. One install pulls in all 5 Nook sub-plugins via dependency resolution.",
+      "category": "meta"
+    },
+    {
+      "name": "cost-tracker",
+      "source": "./plugins/cost-tracker",
+      "description": "L1 — Exponential Smoothing Forecast. Reads Claude API usage from every tool call, attributes via ENCHANTED_ATTRIBUTION env, writes monthly JSONL ledger. Forecasts session/day/month spend with ±2σ bands. Also owns L4 Cache-Waste Measurement.",
+      "category": "cost-tracking"
+    },
+    {
+      "name": "budget-watcher",
+      "source": "./plugins/budget-watcher",
+      "description": "L2 — Budget Boundary Detection. Fires nook.budget.threshold.crossed at 50/80/100% per scope (session/hour/day/month, per agent tier, per model). Also owns L3 Z-Score Cost Anomaly detection.",
+      "category": "cost-tracking"
+    },
+    {
+      "name": "rate-card-keeper",
+      "source": "./plugins/rate-card-keeper",
+      "description": "Holds the committed rate-card.json (per-model input/output rates, cache write 1.25×, cache read 0.1×, batch discount 0.5). Nightly CI refresh via GitHub Actions PR. Fires staleness warning at 90 days.",
+      "category": "cost-tracking"
+    },
+    {
+      "name": "nook-learning",
+      "source": "./plugins/nook-learning",
+      "description": "L5 — Gauss Learning (Nook). Per-developer spend pattern accumulation across sessions. 'This /converge run at $0.80 is 3.3× your rolling mean.' Exports to shared/learnings.json.",
+      "category": "self-learning"
+    },
+    {
+      "name": "cost-query",
+      "source": "./plugins/cost-query",
+      "description": "Developer-facing query surface. /nook-cost, /nook-forecast, /nook-attribute, /nook-report slash commands. Opus orchestrator for anomaly triage.",
+      "category": "developer-ux"
+    }
+  ]
+}
