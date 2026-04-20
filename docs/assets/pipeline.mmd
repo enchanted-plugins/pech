@@ -47,10 +47,17 @@ flowchart TB
     Support --> Bus
     Bus --> Peers
 
-    classDef titleBlock fill:#0d1117,stroke:#1e3a5f,stroke-width:1px,color:#e6edf3
-    classDef session fill:#161b22,stroke:#30363d,stroke-width:1px,color:#e6edf3
-    classDef peers fill:#161b22,stroke:#1e3a5f,stroke-width:1px,color:#e6edf3
+    classDef titleBlock fill:#06111f,stroke:#1e3a5f,stroke-width:1px,color:#e6edf3,rx:4,ry:4
+    classDef session fill:#0a1628,stroke:#1e3a5f,stroke-width:1.5px,color:#e6edf3,rx:10,ry:10
+    classDef peers fill:#0f1d33,stroke:#79c0ff,stroke-width:1.5px,color:#79c0ff,rx:8,ry:8
 
     class TitleBlock titleBlock
     class Session session
     class Peers peers
+
+    style Observe fill:#0f1d33,stroke:#58a6ff,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style Guard fill:#0f1d33,stroke:#d75952,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style Support fill:#0f1d33,stroke:#bc8cff,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style Bus fill:#0f1d33,stroke:#3fb950,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+
+    linkStyle default stroke:#8b949e,stroke-width:1.5px

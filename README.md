@@ -161,6 +161,22 @@ Slash commands from `cost-query`:
 
 ## What You Get Per Session
 
+Tool calls flow through four journals — one per sub-plugin — and converge on the enchanted-mcp bus (threshold + rollup events) and the developer query surface. Hook fires at the top; journals in the middle; bus + query at the bottom. The four border colors map engines to journals: yellow = rate-card-keeper · blue = cost-tracker (L1 + L4) · red = budget-watcher (L2 + L3) · purple = nook-learning (L5).
+
+<p align="center">
+  <a href="docs/assets/state-flow.mmd" title="View state-flow diagram source (Mermaid)">
+    <img src="docs/assets/state-flow.svg"
+         alt="Nook per-session state flow: four hook events (SessionStart, PostToolUse, PreCompact, Stop) feed four color-coded journals (rate-card-keeper/shared/rate-card.json, cost-tracker/state/ledger+session+rollups, budget-watcher/state/budgets+counters+thresholds+anomalies, nook-learning/state/learnings + shared/learnings.json), which converge on the enchanted-mcp bus and the /nook-{cost,forecast,report} query surface"
+         width="100%" style="max-width:1100px;">
+  </a>
+</p>
+
+<sub align="center">
+
+Source: [docs/assets/state-flow.mmd](docs/assets/state-flow.mmd) · Regeneration command in [docs/assets/README.md](docs/assets/README.md).
+
+</sub>
+
 ```
 plugins/cost-tracker/state/
 ├── ledger-2026-04.jsonl      Append-only per-call rows with full attribution
