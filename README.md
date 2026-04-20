@@ -190,33 +190,33 @@ Every Nook engine is built on a formal mathematical model. Full derivations in [
 
 ### Engine L1: Exponential Smoothing Forecast
 
-$$\hat{y}_{t+1} = \alpha \cdot y_t + (1 - \alpha) \cdot \hat{y}_t, \quad \alpha = 0.3$$
+<p align="center"><img src="docs/assets/math/l1-smoothing.svg" alt="y_hat_{t+1} = alpha · y_t + (1 - alpha) · y_hat_t, alpha = 0.3"></p>
 
-$$\sigma_{\text{forecast}} = \text{stdev}(\{y_t - \hat{y}_t\}_{t=1}^{n}) \quad \text{band} = \hat{y}_{t+H} \pm 2\sigma$$
+<p align="center"><img src="docs/assets/math/l1-band.svg" alt="sigma_forecast = stdev of residuals {y_t - y_hat_t}, band = y_hat_{t+H} ± 2sigma"></p>
 
 Weighted moving average over the ledger's per-call cost series. Three horizons (session, day, month). Confidence band computed from residual variance — a single-value point estimate without band is banned. α is configurable but α=0.3 balances responsiveness against noise for typical Claude Code session cadence.
 
 ### Engine L2: Budget Boundary Detection
 
-$$\text{fire}(t, s, k) \iff \frac{\text{cost}(s, k)}{\text{ceiling}(s)} \geq t \quad \text{AND} \quad (t, s, k) \notin \text{debounce}$$
+<p align="center"><img src="docs/assets/math/l2-fire.svg" alt="fire(threshold, scope, key) iff cost(scope, key) / ceiling(scope) >= threshold AND (threshold, scope, key) not in debounce"></p>
 
 Per-scope counters maintained across (session, hour, day, month) × (agent tier) × (model). Thresholds at 50/80/100%. Debounce is mandatory: once `(threshold, scope, scope_key)` fires, it does not re-fire within that window. Without debounce, N calls past the threshold would produce N events — floods the bus and trains the developer to mute.
 
 ### Engine L3: Z-Score Cost Anomaly
 
-$$z = \frac{y - \mu}{\sigma}, \quad \text{anomaly} \iff |z| > 3$$
+<p align="center"><img src="docs/assets/math/l3-zscore.svg" alt="z = (y - mu) / sigma, anomaly iff |z| > 3"></p>
 
 Rolling μ and σ computed over the last 30 calls matching the same `(plugin, sub_plugin, skill, agent_tier, model)` tuple. For sessions with N<30, falls back to L5's persisted historical prior. Alerts on both **spikes** (unusual cost increase — the common case) and **drops** (signals cache-hit wins or rate-card drift — also worth surfacing). Uses population stdev, not sample: we have the full observed window, not a sample from a larger population.
 
 ### Engine L4: Cache-Waste Measurement
 
-$$\text{hit\\_ratio} = \frac{R}{R + W + M}, \quad \text{waste\\_usd} = W_{\text{unread}} \cdot r_{\text{input}} \cdot c_{\text{write}}$$
+<p align="center"><img src="docs/assets/math/l4-hit-ratio.svg" alt="hit_ratio = R / (R + W + M); waste_usd = W_unread · r_input · c_write"></p>
 
 Where `R`, `W`, `M` are cache read / write / miss token counts; `W_unread` is the subset of writes with no downstream read in the session; `r_input` is the input rate; `c_write = 1.25` is the cache-write modifier. Surfaces the dollar cost of prompt-cache misses as a first-class signal, not a performance-table afterthought.
 
 ### Engine L5: Gauss Learning (Nook)
 
-$$\mu_{n+1} = (1 - \alpha) \cdot \mu_n + \alpha \cdot \bar{y}_{\text{session}}, \quad \alpha = 0.05$$
+<p align="center"><img src="docs/assets/math/l5-accumulate.svg" alt="mu_{n+1} = (1 - alpha) · mu_n + alpha · y_bar_session, alpha = 0.05"></p>
 
 Slow accumulator: one noisy session barely moves learned μ and σ. Update runs at PreCompact per `(plugin, skill, agent_tier)` attribution key. Persisted in `state/learnings.json` with Allay-A4 atomic serialization (write-to-tmp + fsync + rename). Exported to `shared/learnings.json` under the `nook` section so peer plugins can read Nook's knowledge for their own cost-aware judgments.
 

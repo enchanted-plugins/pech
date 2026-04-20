@@ -33,65 +33,27 @@ fs.mkdirSync(OUT, { recursive: true });
 
 // [filename, TeX source]
 const EQUATIONS = [
-  // README.md science section
-  ["gauss-sigma",
-   String.raw`\sigma(P) = \sqrt{\dfrac{\sum_{i=1}^{5}\bigl(S_i(P) - 10\bigr)^2}{5}}`],
-  ["gauss-transform",
-   String.raw`P_{n+1} = T_{k^\ast}(P_n) \qquad \text{where} \qquad k^\ast = \arg\min_i \, S_i(P_n)`],
-  ["sat-deploy",
-   String.raw`\text{DEPLOY}(P) \;\iff\; \sigma(P) < \tau \;\wedge\; \bigwedge_{j=1}^{8} A_j(P)`],
-  ["adapt-signature",
-   String.raw`T : \; (P,\, M_s) \;\longrightarrow\; (P',\, M_t)`],
-  ["adapt-constraints",
-   String.raw`\text{Semantic}(P') = \text{Semantic}(P) \;\wedge\; \text{Techniques}(P') \cap \text{AntiPatterns}(M_t) = \emptyset`],
-  ["robust-omega",
-   String.raw`\Omega(P) = \dfrac{\bigl|\{\, k : \delta(P,\alpha(c_k)) = \text{RESIST} \,\}\bigr|}{|C|}`],
-  ["robust-hardened",
-   String.raw`P_{\text{hardened}} = \arg\max_{P'} \, \Omega(P') \qquad \text{s.t.} \qquad S(P') \geq S(P) - \varepsilon`],
-  ["verified",
-   String.raw`\text{VERIFIED}(P) \;\iff\; \sigma(P) < \tau \;\wedge\; \text{PassRate}(P, T) = 1.0`],
-  ["accumulation",
-   String.raw`K_n = K_{n-1} \cup \bigl\{\, (k^\ast,\, \Delta\sigma,\, \text{outcome}) \,\bigr\}`],
+  // L1 Exponential Smoothing Forecast
+  ["l1-smoothing",
+   String.raw`\hat{y}_{t+1} = \alpha \cdot y_t + (1 - \alpha) \cdot \hat{y}_t, \qquad \alpha = 0.3`],
+  ["l1-band",
+   String.raw`\sigma_{\text{forecast}} = \text{stdev}\bigl(\{\, y_t - \hat{y}_t \,\}_{t=1}^{n}\bigr), \qquad \text{band} = \hat{y}_{t+H} \pm 2\sigma`],
 
-  // docs/science/README.md additional
-  ["sci-argmin-only",
-   String.raw`k^\ast = \arg\min_i \, S_i(P_n)`],
-  ["sci-transform-only",
-   String.raw`P_{n+1} = T_{k^\ast}(P_n)`],
-  ["sci-accept",
-   String.raw`\text{Accept}\; P_{n+1} \;\iff\; \sigma(P_{n+1}) < \sigma(P_n)`],
-  ["sci-convergence",
-   String.raw`\text{DEPLOY}:\; \sigma(P) < 0.45 \qquad \text{PLATEAU}:\; \sigma(P_n) = \sigma(P_{n-1}) = \sigma(P_{n-2}) \qquad \text{MAX}:\; n \geq 100`],
-  ["sci-adapt-composition",
-   String.raw`P' = A_{M_t} \circ T_{M_t} \circ F_{M_s \to M_t}(P)`],
-  ["sci-passrate",
-   String.raw`\text{PassRate}(P, T) = \dfrac{\bigl|\{\, i : \forall s \in E_i,\; s \subseteq \text{Output}(P, x_i) \,\}\bigr|}{|T|}`],
+  // L2 Budget Boundary Detection
+  ["l2-fire",
+   String.raw`\text{fire}(t,\, s,\, k) \;\iff\; \dfrac{\text{cost}(s,\, k)}{\text{ceiling}(s)} \geq t \;\wedge\; (t,\, s,\, k) \notin \text{debounce}`],
 
-  // Allay context-health equations
-  ["allay-readloop",
-   String.raw`P(\text{read\ loop}) = 1 \quad \text{if} \quad \text{count}\bigl(\text{read}(f, h)\bigr) \geq 3 \;\wedge\; \nexists\, \text{write}(f)`],
-  ["allay-editrevert",
-   String.raw`P(\text{edit\ revert}) = 1 \quad \text{if} \quad h\bigl(\text{write}_n(f)\bigr) = h\bigl(\text{write}_{n-2}(f)\bigr)`],
-  ["allay-testfail",
-   String.raw`P(\text{test\ fail}) = 1 \quad \text{if} \quad \text{count}\bigl(\text{bash}(\text{cmd},\, \text{exit} \neq 0)\bigr) \geq 3`],
-  ["allay-alert",
-   String.raw`\text{Alert}(t) = 1 \;\iff\; P(\text{drift}) = 1 \;\wedge\; t - t_{\text{last}} > \tau`],
-  ["allay-forecast",
-   String.raw`\hat{\mu} = \dfrac{1}{N}\sum_{i=1}^{N} \text{tokens}_i \qquad \text{runway} = \left\lfloor \dfrac{\text{remaining}}{\hat{\mu}} \right\rfloor`],
-  ["allay-ci",
-   String.raw`\text{CI} = t_{\alpha/2} \cdot \dfrac{s}{\sqrt{N}}`],
-  ["allay-compression",
-   String.raw`O \;\longrightarrow\; O' \qquad \text{s.t.} \qquad H(O') \geq \theta \cdot H(O) \;\wedge\; |O'| < |O|`],
-  ["allay-cr",
-   String.raw`\text{CR}(O) = 1 - \dfrac{|O'|}{|O|}`],
-  ["allay-checkpoint-size",
-   String.raw`\bigl|\text{Checkpoint}(t)\bigr| \leq 50\,\text{KB}`],
-  ["allay-atomic",
-   String.raw`\text{write}(f.\text{tmp}) \;\to\; \text{validate}(f.\text{tmp}) \;\to\; \text{rename}(f.\text{tmp},\, f)`],
-  ["allay-sha",
-   String.raw`h_t = \text{SHA256}\bigl(\text{content}(f, t)\bigr)`],
-  ["allay-decision",
-   String.raw`\text{Decision}(f, t) = \begin{cases} \text{BLOCK} & \text{cache}[f].h = h_t \\ \text{ALLOW} & \text{cache}[f].h \neq h_t \\ \text{ALLOW} & t - \text{cache}[f].t > \text{TTL} \end{cases}`],
+  // L3 Z-Score Cost Anomaly
+  ["l3-zscore",
+   String.raw`z = \dfrac{y - \mu}{\sigma}, \qquad \text{anomaly} \;\iff\; |z| > 3`],
+
+  // L4 Cache-Waste Measurement
+  ["l4-hit-ratio",
+   String.raw`\text{hit\_ratio} = \dfrac{R}{R + W + M}, \qquad \text{waste}_{\$} = W_{\text{unread}} \cdot r_{\text{input}} \cdot c_{\text{write}}`],
+
+  // L5 Gauss Learning (Nook)
+  ["l5-accumulate",
+   String.raw`\mu_{n+1} = (1 - \alpha) \cdot \mu_n + \alpha \cdot \bar{y}_{\text{session}}, \qquad \alpha = 0.05`],
 ];
 
 function render(name, source) {
