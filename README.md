@@ -18,9 +18,15 @@ The cost ledger for AI-assisted development that learns from every session.
 >
 > Time: zero developer interruption. Budget preserved. Cache regression surfaced before it compounded.
 
+## Origin
+
+Nook takes its name from **Tom Nook of Animal Crossing** — the shopkeeper who tracks every transaction, remembers every loan, and never closes the books. Nook keeps the same ledger honest: every token, every tier, every pricing change.
+
+The question this plugin answers: *What did it cost?*
+
 ## Contents
 
-- [What Nook Does](#what-nook-does)
+- [How It Works](#how-it-works)
 - [What Makes Nook Different](#what-makes-nook-different)
 - [The Full Lifecycle](#the-full-lifecycle)
 - [Install](#install)
@@ -33,7 +39,7 @@ The cost ledger for AI-assisted development that learns from every session.
 - [Contributing](#contributing)
 - [License](#license)
 
-## What Nook Does
+## How It Works
 
 Nook doesn't just track spend. It **attributes** — every token, every prompt-cache hit, every tool-use turn gets tagged with the plugin / sub-plugin / skill / agent tier / model that fired it. Then it forecasts with honest confidence bands, detects anomalies against your personal rolling mean, and publishes threshold events so peer plugins can **degrade themselves** before you hit the ceiling.
 
@@ -266,6 +272,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+---
+
+## Origin
+
+Nook takes its name from **Animal Crossing** — Tom Nook runs the economy of the village with a patience that approaches dread. Every transaction is tracked, every loan is remembered, and the economy is always watching. This plugin inherits the stance. Every token is counted, every project's spend is attributed, and the forecast is honest even when the news is bad.
+
+The plugin answers the fifth of the Five Questions every AI-assisted session surfaces: *"What did it cost?"* See [docs/ecosystem.md](../flux/docs/ecosystem.md) for the full map.
 
 ---
 
