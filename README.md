@@ -275,12 +275,4 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-## Origin
-
-Nook takes its name from **Animal Crossing** — Tom Nook runs the economy of the village with a patience that approaches dread. Every transaction is tracked, every loan is remembered, and the economy is always watching. This plugin inherits the stance. Every token is counted, every project's spend is attributed, and the forecast is honest even when the news is bad.
-
-The plugin answers the fifth of the Five Questions every AI-assisted session surfaces: *"What did it cost?"* See [docs/ecosystem.md](../flux/docs/ecosystem.md) for the full map.
-
----
-
 Repo: https://github.com/enchanted-plugins/nook
