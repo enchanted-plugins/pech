@@ -355,4 +355,14 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
+## Role in the ecosystem
+
+Nook is the **cost-ledger layer** (Phase 1, pre-release) — it tallies every token attributed to a specific plugin × sub-plugin × agent tier × model via the `ENCHANTED_ATTRIBUTION` environment variable. Upstream, every peer plugin that dispatches work (Flux, Weaver, Allay, Mantis) sets this variable before the call so Nook can apportion cost honestly. Downstream, Nook emits `nook.budget.threshold.crossed` events on the enchanted-mcp bus; peer plugins subscribe and **degrade gracefully** — Flux drops to Haiku, Weaver defers polish, Allay trims context.
+
+Nook does not engineer prompts (Flux's lane), score change trust (Hornet's lane), review code (Mantis's lane), or pre-emptively kill dispatches to enforce budgets (the degradation model is cooperative, not coercive). It keeps the ledger honest.
+
+See [docs/ecosystem.md § Data Flow Between Plugins](docs/ecosystem.md#data-flow-between-plugins) for the full map.
+
+---
+
 Repo: https://github.com/enchanted-plugins/nook
