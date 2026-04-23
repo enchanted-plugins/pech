@@ -13,7 +13,7 @@ Generates human-readable narrative for L3 anomalies surfaced by `detect-anomaly`
 - Read the anomaly event payload + the matching attribution tuple's recent ledger history
 - Correlate with rate-card changes (`state/rate-card-history.jsonl`), cache-behavior shifts, peer-plugin events
 - Produce a 2-4 sentence narrative explaining the anomaly
-- Suggest the cheapest reproduction step (e.g. "run `/nook-attribute --last=30 --skill=/converge` to see the cache-write rate")
+- Suggest the cheapest reproduction step (e.g. "run `/pech-attribute --last=30 --skill=/converge` to see the cache-write rate")
 
 ## Contract
 
@@ -22,7 +22,7 @@ Generates human-readable narrative for L3 anomalies surfaced by `detect-anomaly`
 ```json
 {
   "anomaly": {
-    "attribution_tuple": {"plugin": "flux", "sub_plugin": "convergence-engine", "skill": "/converge", "agent_tier": "executor", "model": "claude-sonnet-4-6"},
+    "attribution_tuple": {"plugin": "wixie", "sub_plugin": "convergence-engine", "skill": "/converge", "agent_tier": "executor", "model": "claude-sonnet-4-6"},
     "current_cost_usd": 0.82,
     "rolling_mean": 0.25,
     "rolling_sigma": 0.08,
@@ -52,9 +52,9 @@ Generates human-readable narrative for L3 anomalies surfaced by `detect-anomaly`
 
 - Diagnostic reasoning is judgment-heavy — the right narrative depends on correlating multiple weak signals
 - Wrong diagnosis trains the developer to ignore L3; right diagnosis earns ongoing trust
-- Narrative quality matters — this is the developer-facing face of Nook's value
+- Narrative quality matters — this is the developer-facing face of Pech's value
 
-Runs on-demand (not per-anomaly) — only invoked when developer requests `/nook-report`, amortizing the Opus cost across many anomalies.
+Runs on-demand (not per-anomaly) — only invoked when developer requests `/pech-report`, amortizing the Opus cost across many anomalies.
 
 ## Failure handling
 

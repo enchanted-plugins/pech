@@ -2,7 +2,7 @@
 """
 forecast.py — L1 Exponential Smoothing Forecast.
 
-Invoked by /nook-forecast slash command (via forecast-cost skill). Reads the current
+Invoked by /pech-forecast slash command (via forecast-cost skill). Reads the current
 session's ledger, runs α-smoothing, projects forward to end-of-session/day/month with
 ±2σ confidence bands.
 """
@@ -16,8 +16,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-COST_STATE = NOOK_ROOT / "plugins" / "cost-tracker" / "state"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+COST_STATE = PECH_ROOT / "plugins" / "cost-tracker" / "state"
 
 MIN_N = 3
 DEFAULT_ALPHA = 0.3
@@ -126,12 +126,12 @@ def main(argv: list) -> int:
         print(json.dumps(result, indent=2))
     else:
         if result.get("insufficient_data"):
-            print(f"Nook forecast ({args.scope}): insufficient data "
+            print(f"Pech forecast ({args.scope}): insufficient data "
                   f"(n={result['n_observations']}, need ≥ {MIN_N})")
         elif "error" in result:
-            print(f"Nook forecast error: {result['error']}")
+            print(f"Pech forecast error: {result['error']}")
         else:
-            print(f"Nook forecast ({args.scope})")
+            print(f"Pech forecast ({args.scope})")
             print("─" * 60)
             print(f"  Point estimate:       ${result['point_estimate_usd']:.4f}")
             print(f"  ±2σ band:             [${result['lower_band_usd']:.4f}, ${result['upper_band_usd']:.4f}]")

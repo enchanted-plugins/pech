@@ -3,7 +3,7 @@ name: detect-anomaly
 description: >
   Runs L3 Z-Score Cost Anomaly detection against the last 30 ledger rows matching the
   same attribution tuple (plugin, sub_plugin, skill, agent_tier, model). Fires
-  nook.anomaly.detected when |z| > 3, for both spikes and drops. Use when: a PostToolUse
+  pech.anomaly.detected when |z| > 3, for both spikes and drops. Use when: a PostToolUse
   hook fires and the ledger row is in place. Do not use when the attribution tuple has
   fewer than 30 historical matches — emit insufficient_data instead of false-positive
   anomaly.
@@ -35,21 +35,21 @@ tools: [Read, Write]
 4. Compute z-score for the current row: `z = (current_cost - μ) / σ`.
 5. If `|z| > 3.0`:
    - Direction = `spike` if `z > 0`, `drop` if `z < 0`.
-   - Fire `nook.anomaly.detected` with full context (current cost, μ, σ, z, direction).
+   - Fire `pech.anomaly.detected` with full context (current cost, μ, σ, z, direction).
    - Append to `state/anomalies.jsonl` for audit.
 
-**Why alert on drops, not just spikes:** a cost drop of 3σ usually means the prompt-cache hit rate spiked — *which is good news and should be surfaced* so the developer knows what pattern is working. Drops are also the earliest signal of a rate-card mismatch (Nook thinks the call costs 10× less than it actually does).
+**Why alert on drops, not just spikes:** a cost drop of 3σ usually means the prompt-cache hit rate spiked — *which is good news and should be surfaced* so the developer knows what pattern is working. Drops are also the earliest signal of a rate-card mismatch (Pech thinks the call costs 10× less than it actually does).
 
 **Success criterion:** μ and σ computed honestly (population stdev, not sample — we have the full observed window); z-score reported even when `|z| < 3` so the narrator agent has the signal for context.
 
 ## Outputs
 
 - `state/anomalies.jsonl` entry
-- Event: `nook.anomaly.detected` (only when `|z| > 3`)
+- Event: `pech.anomaly.detected` (only when `|z| > 3`)
 
 ## Handoff
 
-`cost-query/anomaly-narrator` (Opus) may be invoked at `/nook-report` time to generate human-readable narrative for surfaced anomalies. This skill does not call Opus — narration happens lazily on developer query.
+`cost-query/anomaly-narrator` (Opus) may be invoked at `/pech-report` time to generate human-readable narrative for surfaced anomalies. This skill does not call Opus — narration happens lazily on developer query.
 
 ## Failure modes
 

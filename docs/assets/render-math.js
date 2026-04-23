@@ -51,7 +51,7 @@ const EQUATIONS = [
   ["l4-hit-ratio",
    String.raw`\text{hit\_ratio} = \dfrac{R}{R + W + M}, \qquad \text{waste}_{\$} = W_{\text{unread}} \cdot r_{\text{input}} \cdot c_{\text{write}}`],
 
-  // L5 Gauss Learning (Nook)
+  // L5 Gauss Learning (Pech)
   ["l5-accumulate",
    String.raw`\mu_{n+1} = (1 - \alpha) \cdot \mu_n + \alpha \cdot \bar{y}_{\text{session}}, \qquad \alpha = 0.05`],
 ];

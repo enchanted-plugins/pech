@@ -2,7 +2,7 @@
 description: Generate a dark-themed single-page PDF cost audit with Opus-narrated anomaly diagnosis.
 ---
 
-# /nook-report
+# /pech-report
 
 Full cost audit for the current session (or a prior session by `--session-id`). Produces a dark-themed single-page PDF combining:
 
@@ -16,10 +16,10 @@ Full cost audit for the current session (or a prior session by `--session-id`). 
 ## Usage
 
 ```
-/nook-report                                    # current session
-/nook-report --session-id=<uuid>                # prior session
-/nook-report --day=2026-04-19                   # full day
-/nook-report --output=path/to/report.pdf        # custom output path
+/pech-report                                    # current session
+/pech-report --session-id=<uuid>                # prior session
+/pech-report --day=2026-04-19                   # full day
+/pech-report --output=path/to/report.pdf        # custom output path
 ```
 
 ## Arguments

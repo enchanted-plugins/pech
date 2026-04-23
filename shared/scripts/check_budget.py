@@ -3,8 +3,8 @@
 check_budget.py — PostToolUse hook entry point for budget-watcher's L2 Budget Boundary Detection.
 
 Reads the most recent ledger row, updates per-scope counters, compares against ceilings in
-plugins/budget-watcher/state/budgets.json, and emits nook.budget.threshold.crossed (via
-nook_publish) the *first* time each threshold is crossed within each scope-window.
+plugins/budget-watcher/state/budgets.json, and emits pech.budget.threshold.crossed (via
+pech_publish) the *first* time each threshold is crossed within each scope-window.
 
 Debounce state lives in plugins/budget-watcher/state/thresholds.jsonl (append-only audit).
 """
@@ -17,9 +17,9 @@ from datetime import datetime, timezone, date
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-COST_STATE = NOOK_ROOT / "plugins" / "cost-tracker" / "state"
-BUDGET_STATE = NOOK_ROOT / "plugins" / "budget-watcher" / "state"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+COST_STATE = PECH_ROOT / "plugins" / "cost-tracker" / "state"
+BUDGET_STATE = PECH_ROOT / "plugins" / "budget-watcher" / "state"
 BUDGETS_FILE = BUDGET_STATE / "budgets.json"
 COUNTERS_FILE = BUDGET_STATE / "counters.json"
 THRESHOLDS_LOG = BUDGET_STATE / "thresholds.jsonl"
@@ -165,7 +165,7 @@ def check_and_fire(counters: dict, budgets: dict) -> list:
             for t in THRESHOLDS:
                 if ratio >= t and (t, "total") not in already:
                     event = {
-                        "event": "nook.budget.threshold.crossed",
+                        "event": "pech.budget.threshold.crossed",
                         "scope": scope,
                         "scope_key": scope_key,
                         "axis": "total",
@@ -190,7 +190,7 @@ def check_and_fire(counters: dict, budgets: dict) -> list:
             for t in THRESHOLDS:
                 if ratio >= t and (t, tier) not in already:
                     event = {
-                        "event": "nook.budget.threshold.crossed",
+                        "event": "pech.budget.threshold.crossed",
                         "scope": scope,
                         "scope_key": scope_key,
                         "axis": tier,
@@ -207,7 +207,7 @@ def check_and_fire(counters: dict, budgets: dict) -> list:
 
 
 def _publish_event(event: dict, publish_py: Path) -> None:
-    """Invoke nook_publish.py subprocess with the event JSON on stdin. Fail-open."""
+    """Invoke pech_publish.py subprocess with the event JSON on stdin. Fail-open."""
     try:
         payload = json.dumps({
             "event": event["event"],
@@ -227,7 +227,7 @@ def _publish_event(event: dict, publish_py: Path) -> None:
             capture_output=True,
         )
     except Exception as exc:
-        print(f"[nook:check_budget] publish failed (non-fatal): {exc}", file=sys.stderr)
+        print(f"[pech:check_budget] publish failed (non-fatal): {exc}", file=sys.stderr)
 
 
 def main() -> int:
@@ -242,11 +242,11 @@ def main() -> int:
     counters = update_counters(row)
     events = check_and_fire(counters, budgets)
 
-    # Emit events via the publisher helper. Rate-limiting is handled by nook_publish.
-    _PUBLISH_PY = Path(__file__).resolve().parent / "nook_publish.py"
+    # Emit events via the publisher helper. Rate-limiting is handled by pech_publish.
+    _PUBLISH_PY = Path(__file__).resolve().parent / "pech_publish.py"
     for event in events:
         _publish_event(event, _PUBLISH_PY)
-        print(f"[nook] budget {event['threshold']*100:.0f}% crossed: "
+        print(f"[pech] budget {event['threshold']*100:.0f}% crossed: "
               f"{event['scope']}/{event['axis']} at ${event['current_usd']}/${event['ceiling_usd']:.2f}",
               file=sys.stderr)
 

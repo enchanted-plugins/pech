@@ -6,7 +6,7 @@ allowed-tools: [Read]
 
 # report-narrator
 
-Writes the opening narrative (3-5 sentences) for `/nook-report` — the "what happened this session" summary that sits above the tables. Not to be confused with `anomaly-triager` (which narrates individual anomalies).
+Writes the opening narrative (3-5 sentences) for `/pech-report` — the "what happened this session" summary that sits above the tables. Not to be confused with `anomaly-triager` (which narrates individual anomalies).
 
 ## Responsibilities
 
@@ -30,7 +30,7 @@ Writes the opening narrative (3-5 sentences) for `/nook-report` — the "what ha
   "cache_hit_ratio": 0.78,
   "cache_waste_usd": 0.12,
   "l5_delta_pct": 0.15,
-  "top_cost_source": "flux/convergence-engine/sonnet"
+  "top_cost_source": "wixie/convergence-engine/sonnet"
 }
 ```
 
@@ -45,7 +45,7 @@ Writes the opening narrative (3-5 sentences) for `/nook-report` — the "what ha
 }
 ```
 
-**Scope fence:** Factual only. No speculation beyond what the data supports. No recommendations to change plugins or behaviors — the developer decides, Nook reports.
+**Scope fence:** Factual only. No speculation beyond what the data supports. No recommendations to change plugins or behaviors — the developer decides, Pech reports.
 
 ## Tier justification
 
@@ -53,7 +53,7 @@ Writes the opening narrative (3-5 sentences) for `/nook-report` — the "what ha
 
 - The session summary is the first thing the developer reads — low quality poisons the whole report
 - Tone calibration is genuinely hard: "you spent $50" reads wildly differently in different contexts
-- Runs once per `/nook-report`, not per call — amortized well
+- Runs once per `/pech-report`, not per call — amortized well
 
 ## Failure handling
 

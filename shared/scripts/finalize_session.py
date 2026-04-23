@@ -2,7 +2,7 @@
 """
 finalize_session.py — Stop hook entry point.
 
-Produces a daily rollup from the current session's rows and emits nook.session.cost.finalized.
+Produces a daily rollup from the current session's rows and emits pech.session.cost.finalized.
 The only on-stop cost-tracker action — everything else happens per-PostToolUse.
 """
 
@@ -13,8 +13,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-COST_STATE = NOOK_ROOT / "plugins" / "cost-tracker" / "state"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+COST_STATE = PECH_ROOT / "plugins" / "cost-tracker" / "state"
 ROLLUP_DIR = COST_STATE / "rollups"
 
 
@@ -87,7 +87,7 @@ def main() -> int:
     # Emit finalize event (stub — would dispatch to enchanted-mcp bus in full implementation)
     session_id = rows[0].get("attribution", {}).get("session_id", "unknown")
     total = sum(float(r.get("cost", {}).get("total_cost_usd", 0.0)) for r in rows)
-    print(f"[nook] session finalized: {session_id} — {len(rows)} calls, ${total:.4f}", file=sys.stderr)
+    print(f"[pech] session finalized: {session_id} — {len(rows)} calls, ${total:.4f}", file=sys.stderr)
     return 0
 
 

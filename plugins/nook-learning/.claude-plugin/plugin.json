@@ -1,6 +1,6 @@
 {
-  "name": "nook-learning",
-  "description": "L5 Gauss Learning (Nook). Per-developer spend-pattern accumulation across sessions. Builds weighted moving averages of cost-per-(skill, session_type, model) so anomaly detection has meaningful μ after the first 30 calls. Allay-A4 atomic serialization. Exports to shared/learnings.json for cross-plugin intelligence.",
+  "name": "pech-learning",
+  "description": "L5 Gauss Learning (Pech). Per-developer spend-pattern accumulation across sessions. Builds weighted moving averages of cost-per-(skill, session_type, model) so anomaly detection has meaningful μ after the first 30 calls. Fae-A4 atomic serialization. Exports to shared/learnings.json for cross-plugin intelligence.",
   "version": "0.1.0",
   "author": {
     "name": "enchanted-plugins"

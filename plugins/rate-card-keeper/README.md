@@ -1,6 +1,6 @@
 # rate-card-keeper
 
-*Part of [Nook](../../README.md) — Cost Ledger for AI-Assisted Development.*
+*Part of [Pech](../../README.md) — Cost Ledger for AI-Assisted Development.*
 
 Holds the rate card that every cost computation depends on. Rate card is committed JSON, refreshed via CI PR — never fetched at runtime (brand invariant: zero external runtime deps).
 
@@ -41,7 +41,7 @@ Holds the rate card that every cost computation depends on. Rate card is committ
 ## Staleness policy
 
 - **0–60 days old:** normal operation.
-- **60–90 days old:** `load-rate-card` emits `nook.rate_card.stale.warning` at SessionStart.
+- **60–90 days old:** `load-rate-card` emits `pech.rate_card.stale.warning` at SessionStart.
 - **> 90 days old:** all ledger rows computed against this card are tagged `rate_card_stale: true` — forecasts flag themselves as potentially off.
 - **> 180 days old:** `load-rate-card` fails hard at SessionStart — refuse to observe until refreshed. Cost data under a half-year-stale card is dangerously wrong.
 
@@ -63,11 +63,11 @@ Never fetches at runtime. Never caches. The JSON is authoritative.
 
 ## Outputs
 
-- **Event bus:** `nook.rate_card.refreshed` (on first load of a newer-than-prior-session card), `nook.rate_card.stale.warning` (60-90 days), `nook.rate_card.stale.blocking` (>180 days)
+- **Event bus:** `pech.rate_card.refreshed` (on first load of a newer-than-prior-session card), `pech.rate_card.stale.warning` (60-90 days), `pech.rate_card.stale.blocking` (>180 days)
 
 ## Events
 
-**Publishes:** `nook.rate_card.refreshed`, `nook.rate_card.stale.warning`, `nook.rate_card.stale.blocking`
+**Publishes:** `pech.rate_card.refreshed`, `pech.rate_card.stale.warning`, `pech.rate_card.stale.blocking`
 
 **Subscribes:** none
 

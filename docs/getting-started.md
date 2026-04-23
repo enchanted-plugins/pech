@@ -1,16 +1,16 @@
-# Getting started with Nook
+# Getting started with Pech
 
-**Status: planned.** Nook has not shipped a public release yet. This page describes what the first release will look like. Until then, treat it as design intent, not documentation.
+**Status: planned.** Pech has not shipped a public release yet. This page describes what the first release will look like. Until then, treat it as design intent, not documentation.
 
-Nook is the ecosystem's cost tracker: every AI-assisted transaction tallied, every budget remembered, every forecast honest.
+Pech is the ecosystem's cost tracker: every AI-assisted transaction tallied, every budget remembered, every forecast honest.
 
 ## Planned install
 
 Once v0.1.0 ships:
 
 ```
-/plugin marketplace add enchanted-plugins/nook
-/plugin install full@nook
+/plugin marketplace add enchanted-plugins/pech
+/plugin install full@pech
 ```
 
 ## Planned commands
@@ -19,10 +19,10 @@ Commands already present in the repo tree:
 
 | Command | What it will do |
 |---------|-----------------|
-| `/nook-cost` | Show current spend for this session, project, or time window. |
-| `/nook-attribute` | Break spend down by provider, model, command, or sub-plugin. |
-| `/nook-forecast` | Exponential-smoothing forecast (L1) of this week's / month's spend. |
-| `/nook-report` | Full spend report — numbers, trends, top-3 cost sinks. |
+| `/pech-cost` | Show current spend for this session, project, or time window. |
+| `/pech-attribute` | Break spend down by provider, model, command, or sub-plugin. |
+| `/pech-forecast` | Exponential-smoothing forecast (L1) of this week's / month's spend. |
+| `/pech-report` | Full spend report — numbers, trends, top-3 cost sinks. |
 
 ## Planned engines
 
@@ -34,10 +34,10 @@ Commands already present in the repo tree:
 
 ## Ecosystem fit
 
-Nook answers the question *"What did it cost?"* in the Five Questions model (see [ecosystem.md](ecosystem.md)). It consumes Allay's token accounting and Reaper's audit trail, aggregates across sessions, and writes back to a per-project ledger.
+Pech answers the question *"What did it cost?"* in the Five Questions model (see [ecosystem.md](ecosystem.md)). It consumes Fae's token accounting and Hydra's audit trail, aggregates across sessions, and writes back to a per-project ledger.
 
 ## Until it ships
 
 - Track progress in [ROADMAP.md](ROADMAP.md).
-- Discuss design in [GitHub Discussions](https://github.com/enchanted-plugins/nook/discussions).
+- Discuss design in [GitHub Discussions](https://github.com/enchanted-plugins/pech/discussions).
 - Report bugs against the planned interface only if you've read the source — the public API isn't stable yet.

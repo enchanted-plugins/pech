@@ -1,5 +1,5 @@
 {
-  "description": "budget-watcher hooks — check thresholds + run anomaly detection after each ledger write. Advisory-only: fires bus events, does not block. Hard-budget enforcement is opt-in via NOOK_HARD_BUDGET env and routes through weaver-gate separately.",
+  "description": "budget-watcher hooks — check thresholds + run anomaly detection after each ledger write. Advisory-only: fires bus events, does not block. Hard-budget enforcement is opt-in via PECH_HARD_BUDGET env and routes through sylph-gate separately.",
   "hooks": {
     "PostToolUse": [
       {

@@ -1,6 +1,6 @@
 # Installation
 
-`nook` is an @enchanted-plugins product. It installs as a Claude Code plugin.
+`pech` is an @enchanted-plugins product. It installs as a Claude Code plugin.
 
 ## Prerequisites
 
@@ -12,8 +12,8 @@
 ## Recommended: Claude Code marketplace
 
 ```
-/plugin marketplace add enchanted-plugins/nook
-/plugin install full@nook
+/plugin marketplace add enchanted-plugins/pech
+/plugin install full@pech
 ```
 
 Claude Code resolves the meta-plugin's dependency list and installs every sub-plugin in one pass. Verify with:
@@ -22,14 +22,14 @@ Claude Code resolves the meta-plugin's dependency list and installs every sub-pl
 /plugin list
 ```
 
-You should see each sub-plugin listed with its version. If a sub-plugin is missing, check `/plugin marketplace list` and confirm the `enchanted-plugins/nook` entry is present.
+You should see each sub-plugin listed with its version. If a sub-plugin is missing, check `/plugin marketplace list` and confirm the `enchanted-plugins/pech` entry is present.
 
 ## Cherry-pick a single sub-plugin
 
 Some sub-plugins are useful on their own. To install only one:
 
 ```
-/plugin install <sub-plugin-name>@nook
+/plugin install <sub-plugin-name>@pech
 ```
 
 See [README.md](../README.md) § Plugins for the list of sub-plugin names.
@@ -39,7 +39,7 @@ See [README.md](../README.md) § Plugins for the list of sub-plugin names.
 The shell installer clones the repo, validates the environment, and copies plugins into `~/.claude/plugins/`. Use this path when you need the local `shared/scripts/*.py` available outside Claude Code.
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/nook/main/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/pech/main/install.sh)
 ```
 
 The installer is idempotent — re-running it upgrades in place.
@@ -47,8 +47,8 @@ The installer is idempotent — re-running it upgrades in place.
 ## From source (for contributors)
 
 ```bash
-git clone https://github.com/enchanted-plugins/nook.git
-cd nook
+git clone https://github.com/enchanted-plugins/pech.git
+cd pech
 bash install.sh
 cd docs/assets && npm install     # only if you will touch diagrams / math SVGs
 ```
@@ -64,12 +64,12 @@ If any step fails, see [troubleshooting.md](troubleshooting.md).
 ## Uninstall
 
 ```
-/plugin uninstall full@nook
-/plugin marketplace remove enchanted-plugins/nook
+/plugin uninstall full@pech
+/plugin marketplace remove enchanted-plugins/pech
 ```
 
-To remove the shell-installed copies as well: `rm -rf ~/.claude/plugins/nook-*`.
+To remove the shell-installed copies as well: `rm -rf ~/.claude/plugins/pech-*`.
 
 ## Upgrades
 
-`/plugin upgrade full@nook` for the marketplace install. Re-run the shell installer for the curl-based install. Before upgrading across a major version, skim [CHANGELOG.md](../CHANGELOG.md) for breaking changes.
+`/plugin upgrade full@pech` for the marketplace install. Re-run the shell installer for the curl-based install. Before upgrading across a major version, skim [CHANGELOG.md](../CHANGELOG.md) for breaking changes.

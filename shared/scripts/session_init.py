@@ -15,8 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-STATE_DIR = NOOK_ROOT / "plugins" / "cost-tracker" / "state"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+STATE_DIR = PECH_ROOT / "plugins" / "cost-tracker" / "state"
 SESSION_FILE = STATE_DIR / "session.json"
 PRIOR_SESSION_FILE = STATE_DIR / "session-prior.json"
 

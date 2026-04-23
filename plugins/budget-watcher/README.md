@@ -1,8 +1,8 @@
 # budget-watcher
 
-*Part of [Nook](../../README.md) — Cost Ledger for AI-Assisted Development.*
+*Part of [Pech](../../README.md) — Cost Ledger for AI-Assisted Development.*
 
-Owns Nook's two threshold-alerting engines. L2 fires on budget crossings; L3 fires on statistical anomalies. Both publish through the enchanted-mcp event bus so peer plugins degrade gracefully.
+Owns Pech's two threshold-alerting engines. L2 fires on budget crossings; L3 fires on statistical anomalies. Both publish through the enchanted-mcp event bus so peer plugins degrade gracefully.
 
 ## Engines
 
@@ -19,7 +19,7 @@ Owns Nook's two threshold-alerting engines. L2 fires on budget crossings; L3 fir
 
 ## Outputs
 
-- **Event bus:** `nook.budget.threshold.crossed`, `nook.anomaly.detected`, `nook.attribution.orphan_rate.crossed`
+- **Event bus:** `pech.budget.threshold.crossed`, `pech.anomaly.detected`, `pech.attribution.orphan_rate.crossed`
 - **State log:** `state/thresholds.jsonl` (debounce state + audit trail of every crossing)
 
 ## Budget configuration
@@ -50,9 +50,9 @@ Debounce state lives in `state/thresholds.jsonl` — append-only so we can audit
 
 | Event | Trigger | Payload |
 |-------|---------|---------|
-| `nook.budget.threshold.crossed` | L2 crossing (50/80/100%) | `{scope, scope_key, threshold, ceiling_usd, current_usd, ratio}` |
-| `nook.anomaly.detected` | L3 3σ outlier | `{attribution_tuple, current_cost_usd, rolling_mean, rolling_sigma, z_score, direction ∈ {spike, drop}}` |
-| `nook.attribution.orphan_rate.crossed` | orphan rate > threshold over rolling 100 calls | `{orphan_count, total_count, orphan_rate}` |
+| `pech.budget.threshold.crossed` | L2 crossing (50/80/100%) | `{scope, scope_key, threshold, ceiling_usd, current_usd, ratio}` |
+| `pech.anomaly.detected` | L3 3σ outlier | `{attribution_tuple, current_cost_usd, rolling_mean, rolling_sigma, z_score, direction ∈ {spike, drop}}` |
+| `pech.attribution.orphan_rate.crossed` | orphan rate > threshold over rolling 100 calls | `{orphan_count, total_count, orphan_rate}` |
 
 **Subscribes:** (reads ledger rows written by cost-tracker; no bus subscription needed)
 

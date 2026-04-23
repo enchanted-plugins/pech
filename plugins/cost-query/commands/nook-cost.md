@@ -1,19 +1,19 @@
 ---
-description: Display current Nook cost totals with attribution breakdown. Scope via --session (default), --day, or --month.
+description: Display current Pech cost totals with attribution breakdown. Scope via --session (default), --day, or --month.
 ---
 
-# /nook-cost
+# /pech-cost
 
 Shows what the current session / day / month has cost, broken down by plugin → sub-plugin → skill → agent tier → model.
 
 ## Usage
 
 ```
-/nook-cost                  # current session (default)
-/nook-cost --session
-/nook-cost --day
-/nook-cost --month
-/nook-cost --json           # machine-readable JSON instead of table
+/pech-cost                  # current session (default)
+/pech-cost --session
+/pech-cost --day
+/pech-cost --month
+/pech-cost --json           # machine-readable JSON instead of table
 ```
 
 ## Arguments
@@ -27,12 +27,12 @@ Shows what the current session / day / month has cost, broken down by plugin →
 ## Example output
 
 ```
-Nook — session spend (session_id: 4f2a...9e3d)
+Pech — session spend (session_id: 4f2a...9e3d)
 ─────────────────────────────────────────────────────────────
 Total:                                                $1.23
-  flux / convergence-engine / /converge / sonnet     $1.10  (89%)
-  hornet / trust-scorer / PostToolUse / haiku        $0.08  (6.5%)
-  nook / cost-tracker / observe / haiku              $0.02  (1.6%)
+  wixie / convergence-engine / /converge / sonnet     $1.10  (89%)
+  raven / trust-scorer / PostToolUse / haiku        $0.08  (6.5%)
+  pech / cost-tracker / observe / haiku              $0.02  (1.6%)
   orphan (no ENCHANTED_ATTRIBUTION)                  $0.03  (2.4%)
 ─────────────────────────────────────────────────────────────
 Cache hit ratio: 78%   Cache waste: $0.04 (writes with no downstream reads)

@@ -11,7 +11,7 @@ Runs the L1 Exponential Smoothing loop over the current session's ledger and emi
 ## Responsibilities
 
 - Read the ledger tail-first from `plugins/cost-tracker/state/ledger-YYYY-MM.jsonl`
-- Compute exponential smoothing with α = 0.3 (configurable via `NOOK_EMA_ALPHA` env)
+- Compute exponential smoothing with α = 0.3 (configurable via `PECH_EMA_ALPHA` env)
 - Compute residual standard deviation honestly (population stdev, not sample — we have the full observed series)
 - Project forward to end-of-scope and emit `{point_estimate, sigma, lower_band, upper_band}`
 

@@ -6,7 +6,7 @@ allowed-tools: [Read]
 
 # threshold-auditor
 
-Validates that threshold events fired in `state/thresholds.jsonl` satisfy the debounce contract (one event per threshold-scope-window). Runs on-demand during `/nook-report` or when a developer complains about event spam.
+Validates that threshold events fired in `state/thresholds.jsonl` satisfy the debounce contract (one event per threshold-scope-window). Runs on-demand during `/pech-report` or when a developer complains about event spam.
 
 ## Responsibilities
 

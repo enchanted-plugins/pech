@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-accumulate_pattern.py — L5 Gauss Learning (Nook).
+accumulate_pattern.py — L5 Gauss Learning (Pech).
 
 PreCompact hook. Reads the current session's ledger, groups by attribution key,
-updates per-developer patterns in plugins/nook-learning/state/learnings.json with
+updates per-developer patterns in plugins/pech-learning/state/learnings.json with
 slow exponential smoothing (α = 0.05). Exports a snapshot to shared/learnings.json.
 
-Atomic write via temp-rename (Allay-A4 pattern).
+Atomic write via temp-rename (Fae-A4 pattern).
 """
 
 import json
@@ -18,10 +18,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-COST_STATE = NOOK_ROOT / "plugins" / "cost-tracker" / "state"
-LEARNINGS_FILE = NOOK_ROOT / "plugins" / "nook-learning" / "state" / "learnings.json"
-SHARED_LEARNINGS = NOOK_ROOT / "shared" / "learnings.json"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+COST_STATE = PECH_ROOT / "plugins" / "cost-tracker" / "state"
+LEARNINGS_FILE = PECH_ROOT / "plugins" / "pech-learning" / "state" / "learnings.json"
+SHARED_LEARNINGS = PECH_ROOT / "shared" / "learnings.json"
 
 ALPHA = 0.05  # slow accumulator — one session doesn't skew patterns
 
@@ -143,7 +143,7 @@ def atomic_write_json(path: Path, data) -> bool:
 
 
 def export_to_shared(learnings: dict) -> None:
-    """Append Nook's section to shared/learnings.json without clobbering peer sections."""
+    """Append Pech's section to shared/learnings.json without clobbering peer sections."""
     shared = {}
     if SHARED_LEARNINGS.exists():
         try:
@@ -151,7 +151,7 @@ def export_to_shared(learnings: dict) -> None:
                 shared = json.load(f)
         except Exception:
             shared = {}
-    shared["nook"] = {
+    shared["pech"] = {
         "last_updated": learnings["last_updated"],
         "n_sessions_accumulated": learnings["n_sessions_accumulated"],
         "patterns": learnings["patterns"],

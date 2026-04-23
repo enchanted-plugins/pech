@@ -38,22 +38,22 @@ tools: [Read, Write]
      ```
      (p50 and p95 use Welford-style online percentile estimators over the full history — they're informational, not used in L3 anomaly math.)
 4. Increment `n_sessions_accumulated`. Update `last_updated` timestamp.
-5. Write `state/learnings.json` atomically (write-to-tmp + fsync + rename — Allay-A4 pattern).
-6. Append a cross-plugin snapshot to `shared/learnings.json` with `origin: "nook"` and the full patterns map.
-7. Emit `nook.learning.pattern.updated` event (one per PreCompact, not per key).
+5. Write `state/learnings.json` atomically (write-to-tmp + fsync + rename — Fae-A4 pattern).
+6. Append a cross-plugin snapshot to `shared/learnings.json` with `origin: "pech"` and the full patterns map.
+7. Emit `pech.learning.pattern.updated` event (one per PreCompact, not per key).
 
 **Success criterion:** atomic write succeeded (no partial file on crash); shared/learnings.json appended (not overwritten — peers own their own sections); exactly one event fired regardless of how many keys updated.
 
 ## Outputs
 
 - `state/learnings.json` (updated)
-- `shared/learnings.json` (appended with Nook's section)
-- Event: `nook.learning.pattern.updated`
+- `shared/learnings.json` (appended with Pech's section)
+- Event: `pech.learning.pattern.updated`
 
 ## Handoff
 
 - `budget-watcher/detect-anomaly` reads `state/learnings.json` for the historical prior when current-session observations are < 30.
-- Peer plugins (Flux, Weaver) read `shared/learnings.json#nook` for their own cost-aware decisions.
+- Peer plugins (Wixie, Sylph) read `shared/learnings.json#pech` for their own cost-aware decisions.
 
 ## Failure modes
 

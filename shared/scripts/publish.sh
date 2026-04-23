@@ -22,7 +22,7 @@ elif [[ $# -eq 0 ]]; then
     # Called with stdin JSON
     python3 "${PUBLISH_PY}" || true
 else
-    echo "[nook:publish.sh] usage: publish.sh <topic> <payload-json>" >&2
+    echo "[pech:publish.sh] usage: publish.sh <topic> <payload-json>" >&2
 fi
 
 exit 0

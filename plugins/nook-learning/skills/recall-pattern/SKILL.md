@@ -39,7 +39,7 @@ Returned JSON block:
 {
   "found": true,
   "specificity": "exact",
-  "key": "flux:/converge:sonnet",
+  "key": "wixie:/converge:sonnet",
   "mu_cost_usd": 0.24,
   "sigma_cost_usd": 0.11,
   "p50": 0.22,
@@ -51,7 +51,7 @@ Returned JSON block:
 
 ## Handoff
 
-L3 anomaly detection uses the returned `(mu, sigma)` when in-session N < 30. If `found: false`, L3 returns `insufficient_data` and does not emit `nook.anomaly.detected`.
+L3 anomaly detection uses the returned `(mu, sigma)` when in-session N < 30. If `found: false`, L3 returns `insufficient_data` and does not emit `pech.anomaly.detected`.
 
 ## Failure modes
 

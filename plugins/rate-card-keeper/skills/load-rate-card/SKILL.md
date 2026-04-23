@@ -31,16 +31,16 @@ tools: [Read]
 5. Compute `days_old = today - effective_from`.
 6. Emit staleness signal:
    - `days_old ≤ 60`: silent, no event.
-   - `60 < days_old ≤ 90`: emit `nook.rate_card.stale.warning`.
-   - `90 < days_old ≤ 180`: emit `nook.rate_card.stale.warning` + set global `NOOK_RATE_CARD_STALE=1` so every ledger row is tagged.
-   - `days_old > 180`: emit `nook.rate_card.stale.blocking` + refuse observation (exit non-zero from observe hook — the only place a Nook hook blocks).
+   - `60 < days_old ≤ 90`: emit `pech.rate_card.stale.warning`.
+   - `90 < days_old ≤ 180`: emit `pech.rate_card.stale.warning` + set global `PECH_RATE_CARD_STALE=1` so every ledger row is tagged.
+   - `days_old > 180`: emit `pech.rate_card.stale.blocking` + refuse observation (exit non-zero from observe hook — the only place a Pech hook blocks).
 
-**Success criterion:** schema valid, staleness signal correct, rate-card cached in-memory for the session (written to `/tmp/.nook-rate-card-<session_id>.json` for hook-to-hook continuity since hooks are stateless processes).
+**Success criterion:** schema valid, staleness signal correct, rate-card cached in-memory for the session (written to `/tmp/.pech-rate-card-<session_id>.json` for hook-to-hook continuity since hooks are stateless processes).
 
 ## Outputs
 
-- `/tmp/.nook-rate-card-<session_id>.json` — cached rate-card for this session
-- Event: `nook.rate_card.refreshed` (on newer-than-prior-session load), or `nook.rate_card.stale.{warning,blocking}` per policy
+- `/tmp/.pech-rate-card-<session_id>.json` — cached rate-card for this session
+- Event: `pech.rate_card.refreshed` (on newer-than-prior-session load), or `pech.rate_card.stale.{warning,blocking}` per policy
 
 ## Handoff
 

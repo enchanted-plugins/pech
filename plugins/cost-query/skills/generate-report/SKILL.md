@@ -1,10 +1,10 @@
 ---
 name: generate-report
 description: >
-  Aggregates state across all 5 Nook sub-plugins and renders a dark-themed single-page
+  Aggregates state across all 5 Pech sub-plugins and renders a dark-themed single-page
   PDF cost audit. Invokes anomaly-narrator agent (Opus) once per anomaly for
   human-readable diagnoses; invokes forecaster agent (Sonnet) for the forecast block.
-  Use when: /nook-report slash command fires. Do not use for live session display (see
+  Use when: /pech-report slash command fires. Do not use for live session display (see
   cost-display) — report generation is a heavy operation costing ~$0.04 + $0.005 per
   anomaly.
 model: sonnet
@@ -31,7 +31,7 @@ phase2_status: "Phase 2 — PDF generation pending (puppeteer + Chrome headless 
    - `plugins/cost-tracker/state/session.json#forecast` (or re-run `forecast-cost` skill)
    - `plugins/budget-watcher/state/thresholds.jsonl` (crossings in scope)
    - `plugins/budget-watcher/state/anomalies.jsonl` (anomalies in scope)
-   - `plugins/nook-learning/state/learnings.json` (for L5 delta)
+   - `plugins/pech-learning/state/learnings.json` (for L5 delta)
 2. **Narrate anomalies.** For each anomaly row, delegate to `budget-watcher/agents/anomaly-triager` (Opus) with the row + surrounding ledger context. Collect the returned narratives.
 3. **Render HTML.** Fill the report template (at `templates/report.html` — inline in this skill's dir for now) with: header, total, forecast block, attribution table, threshold-crossing timeline, anomaly section (with narratives), cache-waste summary, L5 delta.
 4. **Render PDF.** Call `docs/architecture/generate.py --report-html=<html> --out=<pdf-path>` — which internally invokes Chrome headless via `docs/assets/puppeteer.config.json`.
@@ -46,7 +46,7 @@ phase2_status: "Phase 2 — PDF generation pending (puppeteer + Chrome headless 
 
 ## Handoff
 
-`/nook-report` slash command displays the PDF path; user opens it manually (or via `--open` flag).
+`/pech-report` slash command displays the PDF path; user opens it manually (or via `--open` flag).
 
 ## Failure modes
 

@@ -3,8 +3,8 @@
 detect_anomaly.py — L3 Z-Score Cost Anomaly Detection.
 
 Runs after every ledger row. Computes z-score against the last 30 rows matching the same
-attribution tuple. Falls back to nook-learning's persisted patterns if in-session N < 30.
-Emits nook.anomaly.detected when |z| > 3 (both spikes and drops).
+attribution tuple. Falls back to pech-learning's persisted patterns if in-session N < 30.
+Emits pech.anomaly.detected when |z| > 3 (both spikes and drops).
 """
 
 import json
@@ -16,10 +16,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-COST_STATE = NOOK_ROOT / "plugins" / "cost-tracker" / "state"
-BUDGET_STATE = NOOK_ROOT / "plugins" / "budget-watcher" / "state"
-LEARNINGS_FILE = NOOK_ROOT / "plugins" / "nook-learning" / "state" / "learnings.json"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+COST_STATE = PECH_ROOT / "plugins" / "cost-tracker" / "state"
+BUDGET_STATE = PECH_ROOT / "plugins" / "budget-watcher" / "state"
+LEARNINGS_FILE = PECH_ROOT / "plugins" / "pech-learning" / "state" / "learnings.json"
 ANOMALIES_LOG = BUDGET_STATE / "anomalies.jsonl"
 
 Z_THRESHOLD = 3.0
@@ -62,7 +62,7 @@ def welford_stats(values: list) -> tuple:
 
 
 def historical_prior(tup: dict) -> dict:
-    """Read nook-learning's persisted pattern. Returns None if not found."""
+    """Read pech-learning's persisted pattern. Returns None if not found."""
     if not LEARNINGS_FILE.exists():
         return None
     try:
@@ -98,11 +98,11 @@ def log_anomaly(entry: dict) -> None:
 
 
 def _publish_anomaly(entry: dict, tup: dict) -> None:
-    """Emit nook.anomaly.detected via nook_publish subprocess. Fail-open."""
-    publish_py = Path(__file__).resolve().parent / "nook_publish.py"
+    """Emit pech.anomaly.detected via pech_publish subprocess. Fail-open."""
+    publish_py = Path(__file__).resolve().parent / "pech_publish.py"
     try:
         payload = json.dumps({
-            "event": "nook.anomaly.detected",
+            "event": "pech.anomaly.detected",
             "session_id": os.environ.get("ENCHANTED_SESSION_ID", "unknown"),
             "plugin": tup.get("plugin", ""),
             "skill": tup.get("skill", ""),
@@ -117,7 +117,7 @@ def _publish_anomaly(entry: dict, tup: dict) -> None:
             capture_output=True,
         )
     except Exception as exc:
-        print(f"[nook:detect_anomaly] publish failed (non-fatal): {exc}", file=sys.stderr)
+        print(f"[pech:detect_anomaly] publish failed (non-fatal): {exc}", file=sys.stderr)
 
 
 def main() -> int:
@@ -167,7 +167,7 @@ def main() -> int:
         return 0  # not an anomaly
 
     entry = {
-        "event": "nook.anomaly.detected",
+        "event": "pech.anomaly.detected",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "attribution_tuple": tup,
         "current_cost_usd": round(current_cost, 6),
@@ -181,8 +181,8 @@ def main() -> int:
     log_anomaly(entry)
     _publish_anomaly(entry, tup)
 
-    # Surface to developer via stderr (the only legitimate mid-session Nook signal)
-    print(f"[nook] anomaly ({'spike' if z > 0 else 'drop'}): "
+    # Surface to developer via stderr (the only legitimate mid-session Pech signal)
+    print(f"[pech] anomaly ({'spike' if z > 0 else 'drop'}): "
           f"{tup['plugin']}/{tup['skill']}/{tup['agent_tier']} at ${current_cost:.4f} "
           f"(|z|={abs(z):.1f}σ, μ=${mu:.4f})",
           file=sys.stderr)

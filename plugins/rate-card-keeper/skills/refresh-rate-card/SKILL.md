@@ -35,7 +35,7 @@ tools: [Read, Write]
 4. Append the current card to `state/rate-card-history.jsonl` (audit trail of all prior cards).
 5. Write the new card to `shared/rate-card.json` via atomic temp-rename (@shared/conduct/verification.md § dry-run pattern).
 6. Set `_meta.last_verified` to today.
-7. Emit `nook.rate_card.refreshed` with the diff summary.
+7. Emit `pech.rate_card.refreshed` with the diff summary.
 
 **Success criterion:** new card is valid, history is preserved, diff summary emitted. Never overwrite the card without appending history — audit trail is load-bearing for forecasting backtests.
 
@@ -43,7 +43,7 @@ tools: [Read, Write]
 
 - Updated `shared/rate-card.json`
 - Appended `state/rate-card-history.jsonl`
-- Event: `nook.rate_card.refreshed` with diff
+- Event: `pech.rate_card.refreshed` with diff
 
 ## Handoff
 

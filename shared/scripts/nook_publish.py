@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-nook_publish.py — enchanted-mcp event-bus publisher (stub).
+pech_publish.py — enchanted-mcp event-bus publisher (stub).
 
 Reads an event payload from stdin (JSON), rate-limits per the brand contract (no per-call
 emission — threshold crossings + rollups only), and dispatches to the bus.
@@ -18,20 +18,20 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-PUBLISH_STATE = NOOK_ROOT / "plugins" / "budget-watcher" / "state"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+PUBLISH_STATE = PECH_ROOT / "plugins" / "budget-watcher" / "state"
 PUBLISHED_LOG = PUBLISH_STATE / "published-events.jsonl"
 RATE_LIMIT_STATE = PUBLISH_STATE / "publish-rate-limit.json"
 
 # Per-event-type minimum interval between publishes (per scope-key)
 RATE_LIMITS = {
-    "nook.budget.threshold.crossed": timedelta(minutes=1),   # debounced by scope anyway
-    "nook.anomaly.detected": timedelta(seconds=30),
-    "nook.session.cost.finalized": timedelta(seconds=0),     # one per session, never rate-limit
-    "nook.rate_card.refreshed": timedelta(seconds=0),
-    "nook.rate_card.stale.warning": timedelta(days=1),
-    "nook.attribution.orphan_rate.crossed": timedelta(minutes=5),
-    "nook.learning.pattern.updated": timedelta(seconds=0),
+    "pech.budget.threshold.crossed": timedelta(minutes=1),   # debounced by scope anyway
+    "pech.anomaly.detected": timedelta(seconds=30),
+    "pech.session.cost.finalized": timedelta(seconds=0),     # one per session, never rate-limit
+    "pech.rate_card.refreshed": timedelta(seconds=0),
+    "pech.rate_card.stale.warning": timedelta(days=1),
+    "pech.attribution.orphan_rate.crossed": timedelta(minutes=5),
+    "pech.learning.pattern.updated": timedelta(seconds=0),
 }
 
 
@@ -101,11 +101,11 @@ def main() -> int:
     try:
         event = json.load(sys.stdin)
     except Exception as e:
-        print(f"nook_publish: invalid event JSON on stdin: {e}", file=sys.stderr)
+        print(f"pech_publish: invalid event JSON on stdin: {e}", file=sys.stderr)
         return 1
 
     if "event" not in event:
-        print("nook_publish: event payload missing 'event' field", file=sys.stderr)
+        print("pech_publish: event payload missing 'event' field", file=sys.stderr)
         return 1
 
     state = load_rate_limit_state()

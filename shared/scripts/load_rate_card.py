@@ -4,7 +4,7 @@ load_rate_card.py — SessionStart hook entry point for rate-card-keeper.
 
 Loads shared/rate-card.json, validates schema, checks staleness, emits events.
 Blocks SessionStart (exit non-zero) only if the card is > 180 days old — that's the one
-place a Nook hook refuses to proceed, because observing against a dangerously stale
+place a Pech hook refuses to proceed, because observing against a dangerously stale
 card produces silently-wrong cost data.
 
 Stdlib only.
@@ -17,9 +17,9 @@ from datetime import date
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-RATE_CARD_FILE = NOOK_ROOT / "shared" / "rate-card.json"
-LOG_FILE = NOOK_ROOT / "plugins" / "rate-card-keeper" / "state" / "load.log"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+RATE_CARD_FILE = PECH_ROOT / "shared" / "rate-card.json"
+LOG_FILE = PECH_ROOT / "plugins" / "rate-card-keeper" / "state" / "load.log"
 
 
 def log(msg: str) -> None:
@@ -88,7 +88,7 @@ def days_old(iso_date: str) -> int:
 def main() -> int:
     if not RATE_CARD_FILE.exists():
         log(f"ERROR: rate-card not found at {RATE_CARD_FILE}")
-        print(f"[nook] WARN: rate-card.json missing — cost attribution disabled until restored", file=sys.stderr)
+        print(f"[pech] WARN: rate-card.json missing — cost attribution disabled until restored", file=sys.stderr)
         return 0  # fail-open
 
     try:
@@ -96,15 +96,15 @@ def main() -> int:
             card = json.load(f)
     except Exception as e:
         log(f"ERROR: rate-card parse failed: {e}")
-        print(f"[nook] ERROR: rate-card.json is not valid JSON: {e}", file=sys.stderr)
+        print(f"[pech] ERROR: rate-card.json is not valid JSON: {e}", file=sys.stderr)
         return 0  # fail-open — better to lose one session's cost data than block the session
 
     errors = validate_schema(card)
     if errors:
         for err in errors:
             log(f"ERROR: {err}")
-            print(f"[nook] rate-card schema error: {err}", file=sys.stderr)
-        print("[nook] WARN: rate-card invalid — all ledger rows will be tagged rate_card_stale=true", file=sys.stderr)
+            print(f"[pech] rate-card schema error: {err}", file=sys.stderr)
+        print("[pech] WARN: rate-card invalid — all ledger rows will be tagged rate_card_stale=true", file=sys.stderr)
         return 0  # fail-open; observation will flag rows as stale
 
     age = days_old(card.get("effective_from", ""))
@@ -115,14 +115,14 @@ def main() -> int:
         log(f"OK: rate-card {age} days old")
     elif age <= 90:
         log(f"WARN: rate-card {age} days old (> 60)")
-        print(f"[nook] rate-card.json is {age} days old — consider refreshing via the nightly CI job", file=sys.stderr)
+        print(f"[pech] rate-card.json is {age} days old — consider refreshing via the nightly CI job", file=sys.stderr)
     elif age <= 180:
         log(f"WARN: rate-card {age} days old (> 90) — tagging rows stale")
-        print(f"[nook] WARN: rate-card.json is {age} days old. All ledger rows will be tagged rate_card_stale=true until refreshed.", file=sys.stderr)
+        print(f"[pech] WARN: rate-card.json is {age} days old. All ledger rows will be tagged rate_card_stale=true until refreshed.", file=sys.stderr)
     else:
         log(f"ERROR: rate-card {age} days old (> 180) — blocking")
-        print(f"[nook] ERROR: rate-card.json is {age} days old (> 180). Refusing to observe — cost data would be dangerously wrong.", file=sys.stderr)
-        print("[nook] Run the nightly CI refresh workflow or manually update shared/rate-card.json before continuing.", file=sys.stderr)
+        print(f"[pech] ERROR: rate-card.json is {age} days old (> 180). Refusing to observe — cost data would be dangerously wrong.", file=sys.stderr)
+        print("[pech] Run the nightly CI refresh workflow or manually update shared/rate-card.json before continuing.", file=sys.stderr)
         return 1  # block SessionStart
 
     return 0

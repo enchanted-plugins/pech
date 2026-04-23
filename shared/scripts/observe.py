@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-observe.py — Nook's PostToolUse hook entry point.
+observe.py — Pech's PostToolUse hook entry point.
 
 Reads the hook payload from stdin (Claude Code's hook contract), parses the API response's
 usage field, looks up the rate, applies prompt-cache modifiers, and appends a ledger row.
@@ -17,10 +17,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-NOOK_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
-LEDGER_DIR = NOOK_ROOT / "plugins" / "cost-tracker" / "state"
+PECH_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT", Path(__file__).resolve().parent.parent.parent))
+LEDGER_DIR = PECH_ROOT / "plugins" / "cost-tracker" / "state"
 SESSION_FILE = LEDGER_DIR / "session.json"
-RATE_CARD_FILE = NOOK_ROOT / "shared" / "rate-card.json"
+RATE_CARD_FILE = PECH_ROOT / "shared" / "rate-card.json"
 OBSERVE_LOG = LEDGER_DIR / "observe.log"
 
 

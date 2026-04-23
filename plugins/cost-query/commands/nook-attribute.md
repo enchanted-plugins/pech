@@ -2,19 +2,19 @@
 description: Break down the last N tool calls by attribution axis — plugin, sub-plugin, skill, agent tier, model, cache behavior.
 ---
 
-# /nook-attribute
+# /pech-attribute
 
-Pivots the ledger for diagnostic work. Use this when `/nook-cost` shows a number you want to explain — which plugin burned it? Which skill? Was it cache writes or reads?
+Pivots the ledger for diagnostic work. Use this when `/pech-cost` shows a number you want to explain — which plugin burned it? Which skill? Was it cache writes or reads?
 
 ## Usage
 
 ```
-/nook-attribute                         # last 30 calls, grouped by plugin+tier
-/nook-attribute --last=100
-/nook-attribute --tool=Bash             # only Bash tool-use calls
-/nook-attribute --plugin=flux           # only Flux's calls
-/nook-attribute --by=model              # group by model instead of plugin+tier
-/nook-attribute --orphans               # show only unattributed calls (health metric)
+/pech-attribute                         # last 30 calls, grouped by plugin+tier
+/pech-attribute --last=100
+/pech-attribute --tool=Bash             # only Bash tool-use calls
+/pech-attribute --plugin=wixie           # only Wixie's calls
+/pech-attribute --by=model              # group by model instead of plugin+tier
+/pech-attribute --orphans               # show only unattributed calls (health metric)
 ```
 
 ## Arguments
@@ -32,11 +32,11 @@ Pivots the ledger for diagnostic work. Use this when `/nook-cost` shows a number
 ## Example output
 
 ```
-Nook — attribution (last 30 calls, grouped by plugin+tier)
+Pech — attribution (last 30 calls, grouped by plugin+tier)
 ──────────────────────────────────────────────────────────────
-  flux / sonnet         18 calls    $1.10  (89%)
-  hornet / haiku         9 calls    $0.08  (6.5%)
-  nook / haiku           2 calls    $0.02  (1.6%)
+  wixie / sonnet         18 calls    $1.10  (89%)
+  raven / haiku         9 calls    $0.08  (6.5%)
+  pech / haiku           2 calls    $0.02  (1.6%)
   orphan                 1 call     $0.03  (2.4%)   ← bug signal
 ──────────────────────────────────────────────────────────────
 Orphan rate: 3.3% (threshold: 1%)  →  investigate upstream plugin

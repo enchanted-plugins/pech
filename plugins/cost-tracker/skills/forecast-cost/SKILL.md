@@ -3,8 +3,8 @@ name: forecast-cost
 description: >
   Computes L1 Exponential Smoothing forecast over the current session's ledger to project
   end-of-session, end-of-day, and end-of-month spend with ±2σ confidence bands. Use when:
-  /nook-forecast slash command fires, or an anomaly in L3 requires the current trajectory
-  for narrative context. Do not use for raw totals (see /nook-cost → cost-display) or for
+  /pech-forecast slash command fires, or an anomaly in L3 requires the current trajectory
+  for narrative context. Do not use for raw totals (see /pech-cost → cost-display) or for
   threshold checks (see budget-watcher).
 model: sonnet
 tools: [Read, Write]
@@ -44,7 +44,7 @@ tools: [Read, Write]
 ## Outputs
 
 - `state/session.json#forecast` — forecast block for the requested horizon
-- Stdout: human-readable summary for developer display (only when invoked via `/nook-forecast`)
+- Stdout: human-readable summary for developer display (only when invoked via `/pech-forecast`)
 
 ## Handoff
 
@@ -55,5 +55,5 @@ tools: [Read, Write]
 | Code | Scenario | Counter |
 |------|----------|---------|
 | F11 | Hit the "looks good" metric by dropping high-residual observations | Residuals are inputs, not nuisance; retain all |
-| F13 | Pad forecast output with marketing phrases ("you're on track!") | Report number + band; narrative is Opus's job at `/nook-report` time |
+| F13 | Pad forecast output with marketing phrases ("you're on track!") | Report number + band; narrative is Opus's job at `/pech-report` time |
 | F14 | Use a stale α without noting rate-card drift influence | If `rate_card_stale: true` in any underlying row, tag the forecast `rate_card_stale: true` |

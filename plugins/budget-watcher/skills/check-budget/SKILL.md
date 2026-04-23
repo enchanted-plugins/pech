@@ -2,7 +2,7 @@
 name: check-budget
 description: >
   Runs L2 Budget Boundary Detection after each ledger write: increments per-scope counters,
-  compares against ceilings in state/budgets.json, emits nook.budget.threshold.crossed on
+  compares against ceilings in state/budgets.json, emits pech.budget.threshold.crossed on
   first crossing of each threshold within each scope-window. Use when: a PostToolUse hook
   fires and cost-tracker has already written the ledger row. Do not use for forecasting
   (see forecast-cost) or anomaly detection (see detect-anomaly).
@@ -29,7 +29,7 @@ tools: [Read, Write]
 2. For each scope ∈ {session, hour, day, month}, compute or read the current scope total. Use rolling sums stored in `state/counters.json` (atomic updates).
 3. For each ceiling in `budgets.json`:
    - `ratio = current_total / ceiling`
-   - For each threshold ∈ {0.50, 0.80, 1.00}: if `ratio` crossed from below to above AND `(threshold, scope, scope_key)` not in recent debounce log → emit `nook.budget.threshold.crossed`.
+   - For each threshold ∈ {0.50, 0.80, 1.00}: if `ratio` crossed from below to above AND `(threshold, scope, scope_key)` not in recent debounce log → emit `pech.budget.threshold.crossed`.
 4. Append the crossing decision (fire / debounce-skip) to `state/thresholds.jsonl` with reason.
 
 **Success criterion:** counters updated atomically (temp-write + rename); at most one event per threshold-scope-window; no stdout pollution.
@@ -38,11 +38,11 @@ tools: [Read, Write]
 
 - Updated `state/counters.json`
 - Appended `state/thresholds.jsonl`
-- Event published via `shared/scripts/nook_publish.py` (which rate-limits to honor the per-window contract)
+- Event published via `shared/scripts/pech_publish.py` (which rate-limits to honor the per-window contract)
 
 ## Handoff
 
-Downstream subscribers: Flux (switches to cheaper model on 80%+ crossings), Weaver (defers PR polish on 100% crossings), Allay (trims context aggressively on any crossing).
+Downstream subscribers: Wixie (switches to cheaper model on 80%+ crossings), Sylph (defers PR polish on 100% crossings), Fae (trims context aggressively on any crossing).
 
 ## Failure modes
 

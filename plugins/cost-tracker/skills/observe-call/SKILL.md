@@ -6,7 +6,7 @@ description: >
   prompt-cache modifiers (1.25× write, 0.1× read), computes billed cost, and appends to
   plugins/cost-tracker/state/ledger-YYYY-MM.jsonl. Use when: a PostToolUse hook fires for
   any tool and attribution metadata is available via ENCHANTED_ATTRIBUTION env. Do not use
-  for forecasting (see /nook-forecast → forecast-cost) or for anomaly detection (see
+  for forecasting (see /pech-forecast → forecast-cost) or for anomaly detection (see
   budget-watcher/detect-anomaly).
 model: haiku
 tools: [Read, Write, Bash]
@@ -18,7 +18,7 @@ tools: [Read, Write, Bash]
 
 - `shared/rate-card.json` exists and is readable
 - The caller sets `ENCHANTED_ATTRIBUTION` env var to a JSON object with `{plugin, sub_plugin, skill, agent_tier, model}`
-- API response is available via hook input (or Allay's `allay.api.usage.observed` event is the source)
+- API response is available via hook input (or Fae's `fae.api.usage.observed` event is the source)
 
 ## Inputs
 
@@ -28,7 +28,7 @@ tools: [Read, Write, Bash]
 
 ## Steps
 
-1. Parse the hook payload for the API `usage` field (`input_tokens`, `output_tokens`, `cache_creation_input_tokens`, `cache_read_input_tokens`). If absent, fall back to `allay.api.usage.observed` subscription.
+1. Parse the hook payload for the API `usage` field (`input_tokens`, `output_tokens`, `cache_creation_input_tokens`, `cache_read_input_tokens`). If absent, fall back to `fae.api.usage.observed` subscription.
 2. Parse `ENCHANTED_ATTRIBUTION`. If missing, tag the row `orphan: true` and continue — do not drop the row.
 3. Look up the model in `shared/rate-card.json`. If model absent, tag `rate_card_stale: true` and use the default fallback rate entry.
 4. Compute cost:

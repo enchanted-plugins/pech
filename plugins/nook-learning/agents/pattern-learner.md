@@ -55,4 +55,4 @@ Runs the L5 Gauss Accumulation update over the current session's ledger. Reads p
 
 ## Failure handling
 
-If `atomic_write_succeeded: false`, the parent must NOT emit the `nook.learning.pattern.updated` event — a failed write means downstream consumers would see inconsistent state. Retry once; if still failing, log to `state/pattern-learner.log` and surface at next session start.
+If `atomic_write_succeeded: false`, the parent must NOT emit the `pech.learning.pattern.updated` event — a failed write means downstream consumers would see inconsistent state. Retry once; if still failing, log to `state/pattern-learner.log` and surface at next session start.

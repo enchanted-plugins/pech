@@ -3,14 +3,14 @@
 publish.py — minimal Phase-1 event-bus publisher helper.
 
 Accepts a topic string and a JSON payload dict, writes a single JSONL line to
-$XDG_STATE_HOME/nook/<repo_id>/events.jsonl (fallback: nook/state/events.jsonl).
+$XDG_STATE_HOME/pech/<repo_id>/events.jsonl (fallback: pech/state/events.jsonl).
 
 Usage (from Python):
     from publish import publish
-    publish("nook.budget.threshold.crossed", {"session_id": ..., ...})
+    publish("pech.budget.threshold.crossed", {"session_id": ..., ...})
 
 Usage (from shell — pipe JSON via stdin):
-    echo '{"topic":"nook.anomaly.detected","payload":{...}}' | python publish.py
+    echo '{"topic":"pech.anomaly.detected","payload":{...}}' | python publish.py
 
 Fail-open: logs to stderr on any failure, never raises.
 """
@@ -40,15 +40,15 @@ def _repo_id() -> str:
 
 
 def _events_path() -> Path:
-    """Resolve the events.jsonl path: XDG_STATE_HOME/nook/<repo_id>/events.jsonl."""
+    """Resolve the events.jsonl path: XDG_STATE_HOME/pech/<repo_id>/events.jsonl."""
     xdg = os.environ.get("XDG_STATE_HOME", "")
     if xdg:
-        base = Path(xdg) / "nook" / _repo_id()
+        base = Path(xdg) / "pech" / _repo_id()
     else:
-        # Fallback: nook/state/events.jsonl relative to this file's plugin root
-        nook_root = Path(os.environ.get("CLAUDE_PLUGIN_ROOT",
+        # Fallback: pech/state/events.jsonl relative to this file's plugin root
+        pech_root = Path(os.environ.get("CLAUDE_PLUGIN_ROOT",
                                         Path(__file__).resolve().parent.parent.parent))
-        base = nook_root / "state"
+        base = pech_root / "state"
     return base / "events.jsonl"
 
 
@@ -68,7 +68,7 @@ def publish(topic: str, payload: dict) -> None:
             fh.flush()
             os.fsync(fh.fileno())
     except Exception as exc:
-        print(f"[nook:publish] failed to emit {topic!r}: {exc}", file=sys.stderr)
+        print(f"[pech:publish] failed to emit {topic!r}: {exc}", file=sys.stderr)
 
 
 def _main() -> int:
@@ -78,7 +78,7 @@ def _main() -> int:
         topic = data["topic"]
         payload = data.get("payload", {})
     except Exception as exc:
-        print(f"[nook:publish] bad stdin JSON: {exc}", file=sys.stderr)
+        print(f"[pech:publish] bad stdin JSON: {exc}", file=sys.stderr)
         return 1
     publish(topic, payload)
     return 0

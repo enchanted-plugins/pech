@@ -47,4 +47,4 @@ If `valid: false`, `errors` contains human-readable messages. The parent must re
 
 ## Failure handling
 
-If verdict is `invalid`, parent surfaces errors and refuses to load the card. Observation hooks should check the validator's verdict at SessionStart and exit-non-zero if invalid — this is the one place a Nook hook blocks, because observing against a broken rate card produces silently-wrong data.
+If verdict is `invalid`, parent surfaces errors and refuses to load the card. Observation hooks should check the validator's verdict at SessionStart and exit-non-zero if invalid — this is the one place a Pech hook blocks, because observing against a broken rate card produces silently-wrong data.

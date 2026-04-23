@@ -1,10 +1,10 @@
 ---
 name: cost-display
 description: >
-  Formats Nook state into human-readable terminal output (or JSON) for /nook-cost and
-  /nook-attribute. Reads ledger + session snapshot + budget-watcher counters; renders
+  Formats Pech state into human-readable terminal output (or JSON) for /pech-cost and
+  /pech-attribute. Reads ledger + session snapshot + budget-watcher counters; renders
   grouped tables with percentages; flags orphan attribution prominently. Use when:
-  /nook-cost or /nook-attribute slash command fires. Do not use for forecasting (see
+  /pech-cost or /pech-attribute slash command fires. Do not use for forecasting (see
   forecast-cost) or PDF generation (see generate-report).
 model: haiku
 tools: [Read]
@@ -15,7 +15,7 @@ tools: [Read]
 ## Preconditions
 
 - `plugins/cost-tracker/state/session.json` exists (current session has observations)
-- Mode flag from slash command: `summary` (for `/nook-cost`) or `attribute` (for `/nook-attribute`)
+- Mode flag from slash command: `summary` (for `/pech-cost`) or `attribute` (for `/pech-attribute`)
 
 ## Inputs
 
@@ -51,5 +51,5 @@ None — this is the terminal output.
 | Code | Scenario | Counter |
 |------|----------|---------|
 | F02 | Fabricate missing subtotal because ledger filter returned empty | Return "no matching rows" banner; never invent |
-| F07 | Add commentary ("looking good!", "concerning trend") to the output | Display raw numbers; narrative is `/nook-report`'s job |
+| F07 | Add commentary ("looking good!", "concerning trend") to the output | Display raw numbers; narrative is `/pech-report`'s job |
 | F13 | ANSI colors break piping to `grep` or file redirect | Check `sys.stdout.isatty()`; skip colors when false |

@@ -1,4 +1,4 @@
-# Nook
+# Pech
 
 <p>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-3fb950?style=for-the-badge"></a>
@@ -15,13 +15,13 @@ The cost ledger for AI-assisted development that learns from every session.
 
 **5 sub-plugins. 5 engines. Per-tier attribution. Event-bus peer degradation. One command.**
 
-> You just ran `/converge` on a Sonnet-heavy prompt. Nook saw 47 calls: Opus orchestrator ($0.06), Sonnet executor over 40 iterations ($2.12), Haiku validator ($0.003). L1 forecast projected end-of-month at $48.20 with ±$3 band against your $50 ceiling. At 80% of the session budget, L2 fired `nook.budget.threshold.crossed` — Flux read the event and dropped `/converge` to Haiku for the next round; Weaver deferred PR polish. L3 flagged iteration 32 as a 3.8σ spike over your rolling mean, cache-hit ratio had fallen from 78% to 12% mid-loop. L5 remembered.
+> You just ran `/converge` on a Sonnet-heavy prompt. Pech saw 47 calls: Opus orchestrator ($0.06), Sonnet executor over 40 iterations ($2.12), Haiku validator ($0.003). L1 forecast projected end-of-month at $48.20 with ±$3 band against your $50 ceiling. At 80% of the session budget, L2 fired `pech.budget.threshold.crossed` — Wixie read the event and dropped `/converge` to Haiku for the next round; Sylph deferred PR polish. L3 flagged iteration 32 as a 3.8σ spike over your rolling mean, cache-hit ratio had fallen from 78% to 12% mid-loop. L5 remembered.
 >
 > Time: zero developer interruption. Budget preserved. Cache regression surfaced before it compounded.
 
 ## Origin
 
-Nook takes its name from **Tom Nook of Animal Crossing** — the shopkeeper who tracks every transaction, remembers every loan, and never closes the books. Nook keeps the same ledger honest: every token, every tier, every pricing change.
+**Pech** takes its name from **Thaumcraft** — short hooded hoarders that wander magical biomes picking up every dropped item and stuffing it into the packs on their backs, never losing track of what they carry. Pech keeps the same ledger discipline: every token, every tier, every pricing change accounted for.
 
 The question this plugin answers: *What did it cost?*
 
@@ -29,24 +29,24 @@ The question this plugin answers: *What did it cost?*
 
 - Teams who need *"where did the budget go?"* in per-plugin / per-tier / per-model granularity, not a single "org total" line.
 - Developers on a personal budget who want honest spend forecasts with confidence bands instead of dashboards that optimize for looking good.
-- Engineers who want peer plugins (Flux, Weaver, Allay) to **degrade** — not crash — when spend crosses a threshold.
+- Engineers who want peer plugins (Wixie, Sylph, Fae) to **degrade** — not crash — when spend crosses a threshold.
 
 Not for:
 
-- Users satisfied with Anthropic's console for spend — if parent-thread aggregation is enough, Nook's attribution is overkill.
-- Closed-cloud teams who can't run local JSONL ledgers — Nook is machine-local by design.
+- Users satisfied with Anthropic's console for spend — if parent-thread aggregation is enough, Pech's attribution is overkill.
+- Closed-cloud teams who can't run local JSONL ledgers — Pech is machine-local by design.
 
 ## Contents
 
 - [How It Works](#how-it-works)
-- [What Makes Nook Different](#what-makes-nook-different)
+- [What Makes Pech Different](#what-makes-pech-different)
 - [The Full Lifecycle](#the-full-lifecycle)
 - [Install](#install)
 - [Quickstart](#quickstart)
 - [5 Sub-Plugins, 5 Engines, 4 Slash Commands](#5-sub-plugins-5-engines-4-slash-commands)
 - [What You Get Per Session](#what-you-get-per-session)
 - [Roadmap](#roadmap)
-- [The Science Behind Nook](#the-science-behind-nook)
+- [The Science Behind Pech](#the-science-behind-pech)
 - [vs Everything Else](#vs-everything-else)
 - [Agent Conduct (10 Modules)](#agent-conduct-10-modules)
 - [Architecture](#architecture)
@@ -58,16 +58,16 @@ Not for:
 
 ## How It Works
 
-Nook doesn't just track spend. It **attributes** — every token, every prompt-cache hit, every tool-use turn gets tagged with the plugin / sub-plugin / skill / agent tier / model that fired it. Then it forecasts with honest confidence bands, detects anomalies against your personal rolling mean, and publishes threshold events so peer plugins can **degrade themselves** before you hit the ceiling.
+Pech doesn't just track spend. It **attributes** — every token, every prompt-cache hit, every tool-use turn gets tagged with the plugin / sub-plugin / skill / agent tier / model that fired it. Then it forecasts with honest confidence bands, detects anomalies against your personal rolling mean, and publishes threshold events so peer plugins can **degrade themselves** before you hit the ceiling.
 
-The core innovation is the **attribution contract**: every enchanted-plugins sibling that dispatches work sets the `ENCHANTED_ATTRIBUTION` environment variable before the call. Nook reads it at `PostToolUse`, looks up the model in `shared/rate-card.json`, applies the prompt-cache modifiers (writes at 1.25×, reads at 0.1×, batch at 0.5×), and writes a ledger row. What Anthropic's console shows as one line of "org total" becomes thirty lines of per-plugin-per-tier-per-model reality.
+The core innovation is the **attribution contract**: every enchanted-plugins sibling that dispatches work sets the `ENCHANTED_ATTRIBUTION` environment variable before the call. Pech reads it at `PostToolUse`, looks up the model in `shared/rate-card.json`, applies the prompt-cache modifiers (writes at 1.25×, reads at 0.1×, batch at 0.5×), and writes a ledger row. What Anthropic's console shows as one line of "org total" becomes thirty lines of per-plugin-per-tier-per-model reality.
 
-The diagram below shows the five-subplugin architecture: a Claude Code session flows into `cost-tracker` (L1 + L4 — the primary hook consumer), which feeds `budget-watcher` (L2 + L3 — threshold + anomaly detection) and `nook-learning` (L5 — cross-session pattern accumulation). `rate-card-keeper` holds the committed rate card; `cost-query` is the skill-invoked developer surface. Events hit the enchanted-mcp bus only on threshold crossings and rollups — peer plugins (Flux, Weaver, Allay) subscribe and degrade gracefully.
+The diagram below shows the five-subplugin architecture: a Claude Code session flows into `cost-tracker` (L1 + L4 — the primary hook consumer), which feeds `budget-watcher` (L2 + L3 — threshold + anomaly detection) and `pech-learning` (L5 — cross-session pattern accumulation). `rate-card-keeper` holds the committed rate card; `cost-query` is the skill-invoked developer surface. Events hit the enchanted-mcp bus only on threshold crossings and rollups — peer plugins (Wixie, Sylph, Fae) subscribe and degrade gracefully.
 
 <p align="center">
   <a href="docs/assets/pipeline.mmd" title="View pipeline source (Mermaid)">
     <img src="docs/assets/pipeline.svg"
-         alt="Nook five-subplugin architecture blueprint — title block, Claude Code session input, cost-tracker (L1+L4), budget-watcher (L2+L3), rate-card-keeper + nook-learning + cost-query support row, enchanted-mcp bus events, and peer-degradation legend"
+         alt="Pech five-subplugin architecture blueprint — title block, Claude Code session input, cost-tracker (L1+L4), budget-watcher (L2+L3), rate-card-keeper + pech-learning + cost-query support row, enchanted-mcp bus events, and peer-degradation legend"
          width="100%" style="max-width: 1100px;">
   </a>
 </p>
@@ -78,17 +78,17 @@ Source: [docs/assets/pipeline.mmd](docs/assets/pipeline.mmd) · Regeneration com
 
 </sub>
 
-No permission prompts. No manual ledgering. You work; Nook observes, tags, forecasts, and alerts.
+No permission prompts. No manual ledgering. You work; Pech observes, tags, forecasts, and alerts.
 
-## What Makes Nook Different
+## What Makes Pech Different
 
 ### It attributes per agent tier, not per parent thread
 
-A single Flux `/converge` run chains Opus (orchestrator, ~$0.06) → Sonnet (executor loop, ~$2.00) → Haiku (validator, ~$0.003). Naïve attribution — what Anthropic's console does — buckets all of it under the parent thread. Opus looks 30× costlier than it is; Sonnet looks free. Nook's `ENCHANTED_ATTRIBUTION.agent_tier` field is set at dispatch time, so every token lands in its actual tier's bucket. **This is what makes `$50/month on Claude Code` answerable.**
+A single Wixie `/converge` run chains Opus (orchestrator, ~$0.06) → Sonnet (executor loop, ~$2.00) → Haiku (validator, ~$0.003). Naïve attribution — what Anthropic's console does — buckets all of it under the parent thread. Opus looks 30× costlier than it is; Sonnet looks free. Pech's `ENCHANTED_ATTRIBUTION.agent_tier` field is set at dispatch time, so every token lands in its actual tier's bucket. **This is what makes `$50/month on Claude Code` answerable.**
 
 ### Peer plugins degrade from its threshold events
 
-When L2 fires `nook.budget.threshold.crossed` at 80%, the enchanted-mcp bus delivers it to every subscribed sibling. Flux switches to Haiku for validator-only roles. Weaver defers PR polish to next session. Allay trims context more aggressively. The next 20% of budget buys you careful degradation instead of a silent overrun or a hard kill.
+When L2 fires `pech.budget.threshold.crossed` at 80%, the enchanted-mcp bus delivers it to every subscribed sibling. Wixie switches to Haiku for validator-only roles. Sylph defers PR polish to next session. Fae trims context more aggressively. The next 20% of budget buys you careful degradation instead of a silent overrun or a hard kill.
 
 External tools can't do this. Anthropic's console fires email alerts. LangSmith sends Slack notifications. Neither can make *your other plugins* react, because they don't own the peer plugins.
 
@@ -97,7 +97,7 @@ External tools can't do this. Anthropic's console fires email alerts. LangSmith 
 Prompt caching is the single biggest lever in Claude Code cost today — and the most opaque. L4 Cache-Waste Measurement tracks cache writes that never get read within the session (1.25× input rate spent for nothing) and reports it in dollars. No other tool does this.
 
 ```
-Nook cache report (session)
+Pech cache report (session)
   Hit ratio:              78%
   Read savings:           $0.42 (at 0.10× rate)
   Unread writes:          $0.04 (1.25× rate × 32 tokens)
@@ -118,12 +118,12 @@ Brand invariant: hooks are bash+jq, scripts are Python stdlib. No external runti
 
 ## The Full Lifecycle
 
-A call flows through Nook in four stages moving top to bottom: **SessionStart** (Haiku) loads the committed rate card and mints the session ID; **PostToolUse** (Haiku, repeated per tool call) parses API usage + attribution env, writes the ledger row, then runs L2 threshold + L3 anomaly detection; **PreCompact** (Sonnet) persists per-developer spend patterns via L5's slow α=0.05 accumulator before compaction wipes in-memory state; **Stop** (Haiku) finalizes the daily rollup and emits `nook.session.cost.finalized`. Throughout, the developer can pull spend state on-demand via `/nook-{cost,forecast,attribute,report}` — the query surface is orthogonal to the observation path.
+A call flows through Pech in four stages moving top to bottom: **SessionStart** (Haiku) loads the committed rate card and mints the session ID; **PostToolUse** (Haiku, repeated per tool call) parses API usage + attribution env, writes the ledger row, then runs L2 threshold + L3 anomaly detection; **PreCompact** (Sonnet) persists per-developer spend patterns via L5's slow α=0.05 accumulator before compaction wipes in-memory state; **Stop** (Haiku) finalizes the daily rollup and emits `pech.session.cost.finalized`. Throughout, the developer can pull spend state on-demand via `/pech-{cost,forecast,attribute,report}` — the query surface is orthogonal to the observation path.
 
 <p align="center">
   <a href="docs/assets/lifecycle.mmd" title="View lifecycle source (Mermaid)">
     <img src="docs/assets/lifecycle.svg"
-         alt="Nook session lifecycle blueprint — 4 stages SessionStart → PostToolUse (×N) → PreCompact → Stop, plus orthogonal skill-invoked Cost Query surface"
+         alt="Pech session lifecycle blueprint — 4 stages SessionStart → PostToolUse (×N) → PreCompact → Stop, plus orthogonal skill-invoked Cost Query surface"
          width="100%" style="max-width: 1100px;">
   </a>
 </p>
@@ -138,23 +138,23 @@ Every stage is autonomous; the developer surface is pull, not push.
 
 ## Install
 
-Nook ships as a 5-sub-plugin marketplace. One meta-plugin — `full` — lists all five as dependencies, so a single install pulls in the whole chain.
+Pech ships as a 5-sub-plugin marketplace. One meta-plugin — `full` — lists all five as dependencies, so a single install pulls in the whole chain.
 
 **In Claude Code** (recommended):
 
 ```
-/plugin marketplace add enchanted-plugins/nook
-/plugin install full@nook
+/plugin marketplace add enchanted-plugins/pech
+/plugin install full@pech
 ```
 
 Claude Code resolves the dependency list and installs all 5 sub-plugins. Verify with `/plugin list`.
 
-**Want to cherry-pick?** Individual sub-plugins are still installable — e.g. `/plugin install cost-tracker@nook` if you only want the ledger and no threshold alerts. Missing sub-plugins degrade gracefully (cost-query without cost-tracker shows "no observations yet"; budget-watcher without rate-card-keeper refuses to observe).
+**Want to cherry-pick?** Individual sub-plugins are still installable — e.g. `/plugin install cost-tracker@pech` if you only want the ledger and no threshold alerts. Missing sub-plugins degrade gracefully (cost-query without cost-tracker shows "no observations yet"; budget-watcher without rate-card-keeper refuses to observe).
 
 **Via shell** (also clones locally so `shared/scripts/*.py` are available):
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/nook/main/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/pech/main/install.sh)
 ```
 
 ## Quickstart
@@ -162,12 +162,12 @@ bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/nook/main/ins
 Once v0.1.0 ships, a first cost report is a single command. Sixty seconds:
 
 ```
-/plugin install full@nook
+/plugin install full@pech
 # ...run any Claude Code session...
-/nook-cost
+/pech-cost
 ```
 
-Expected: `/nook-cost` prints session spend broken down by plugin × sub-plugin × agent tier × model, with an L1 end-of-month forecast and a ±2σ confidence band against your configured ceiling. Peer plugins (Flux / Weaver / Allay) react automatically to L2 threshold events — no manual kill switch. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run once the release lands.
+Expected: `/pech-cost` prints session spend broken down by plugin × sub-plugin × agent tier × model, with an L1 end-of-month forecast and a ±2σ confidence band against your configured ceiling. Peer plugins (Wixie / Sylph / Fae) react automatically to L2 threshold events — no manual kill switch. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run once the release lands.
 
 ## 5 Sub-Plugins, 5 Engines, 4 Slash Commands
 
@@ -176,26 +176,26 @@ Expected: `/nook-cost` prints session spend broken down by plugin × sub-plugin 
 | [cost-tracker](plugins/cost-tracker/) | L1 Exponential Smoothing + L4 Cache-Waste | hook-driven (PostToolUse) | forecaster (Sonnet) |
 | [budget-watcher](plugins/budget-watcher/) | L2 Budget Boundary + L3 Z-Score Anomaly | hook-driven (PostToolUse) | threshold-auditor (Haiku) + anomaly-triager (Opus) |
 | [rate-card-keeper](plugins/rate-card-keeper/) | rate card + staleness | hook-driven (SessionStart) | rate-card-validator (Haiku) |
-| [nook-learning](plugins/nook-learning/) | L5 Gauss Learning (Nook) | hook-driven (PreCompact) | pattern-learner (Sonnet) |
+| [pech-learning](plugins/pech-learning/) | L5 Gauss Learning (Pech) | hook-driven (PreCompact) | pattern-learner (Sonnet) |
 | [cost-query](plugins/cost-query/) | developer slash commands | skill-invoked | report-narrator (Opus) |
 
 Slash commands from `cost-query`:
 
 | Command | Function | Agent tier |
 |---------|----------|------------|
-| `/nook-cost [--session\|--day\|--month]` | Current spend with attribution breakdown | Haiku |
-| `/nook-forecast [--session\|--day\|--month]` | L1 projection with ±2σ band | Sonnet |
-| `/nook-attribute [--last=N] [--tool=<name>]` | Break down last N calls by any axis | Haiku |
-| `/nook-report` | Dark-themed PDF audit with Opus anomaly narrative | Opus + Sonnet |
+| `/pech-cost [--session\|--day\|--month]` | Current spend with attribution breakdown | Haiku |
+| `/pech-forecast [--session\|--day\|--month]` | L1 projection with ±2σ band | Sonnet |
+| `/pech-attribute [--last=N] [--tool=<name>]` | Break down last N calls by any axis | Haiku |
+| `/pech-report` | Dark-themed PDF audit with Opus anomaly narrative | Opus + Sonnet |
 
 ## What You Get Per Session
 
-Tool calls flow through four journals — one per sub-plugin — and converge on the enchanted-mcp bus (threshold + rollup events) and the developer query surface. Hook fires at the top; journals in the middle; bus + query at the bottom. The four border colors map engines to journals: yellow = rate-card-keeper · blue = cost-tracker (L1 + L4) · red = budget-watcher (L2 + L3) · purple = nook-learning (L5).
+Tool calls flow through four journals — one per sub-plugin — and converge on the enchanted-mcp bus (threshold + rollup events) and the developer query surface. Hook fires at the top; journals in the middle; bus + query at the bottom. The four border colors map engines to journals: yellow = rate-card-keeper · blue = cost-tracker (L1 + L4) · red = budget-watcher (L2 + L3) · purple = pech-learning (L5).
 
 <p align="center">
   <a href="docs/assets/state-flow.mmd" title="View state-flow diagram source (Mermaid)">
     <img src="docs/assets/state-flow.svg"
-         alt="Nook per-session state flow: four hook events (SessionStart, PostToolUse, PreCompact, Stop) feed four color-coded journals (rate-card-keeper/shared/rate-card.json, cost-tracker/state/ledger+session+rollups, budget-watcher/state/budgets+counters+thresholds+anomalies, nook-learning/state/learnings + shared/learnings.json), which converge on the enchanted-mcp bus and the /nook-{cost,forecast,report} query surface"
+         alt="Pech per-session state flow: four hook events (SessionStart, PostToolUse, PreCompact, Stop) feed four color-coded journals (rate-card-keeper/shared/rate-card.json, cost-tracker/state/ledger+session+rollups, budget-watcher/state/budgets+counters+thresholds+anomalies, pech-learning/state/learnings + shared/learnings.json), which converge on the enchanted-mcp bus and the /pech-{cost,forecast,report} query surface"
          width="100%" style="max-width:1100px;">
   </a>
 </p>
@@ -208,7 +208,7 @@ Source: [docs/assets/state-flow.mmd](docs/assets/state-flow.mmd) · Regeneration
 
 ## Roadmap
 
-Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](https://github.com/enchanted-plugins/flux/blob/main/docs/ecosystem.md). For upcoming work specific to Nook, see issues tagged [roadmap](https://github.com/enchanted-plugins/nook/labels/roadmap).
+Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](https://github.com/enchanted-plugins/wixie/blob/main/docs/ecosystem.md). For upcoming work specific to Pech, see issues tagged [roadmap](https://github.com/enchanted-plugins/pech/labels/roadmap).
 
 ```
 plugins/cost-tracker/state/
@@ -223,7 +223,7 @@ plugins/budget-watcher/state/
 ├── thresholds.jsonl          Debounce state + audit trail of every crossing
 └── anomalies.jsonl           L3 detection log
 
-plugins/nook-learning/state/
+plugins/pech-learning/state/
 └── learnings.json            Per-developer patterns (α=0.05 accumulated)
 
 shared/
@@ -231,11 +231,11 @@ shared/
 └── learnings.json            Cross-plugin exported patterns
 ```
 
-The **PDF audit report** from `/nook-report` includes: session total + forecast band, attribution pie (plugin × tier × model), L2 threshold-crossing timeline, L3 anomaly list with Opus-narrated diagnoses, L4 cache-waste breakdown, L5 delta from your rolling mean.
+The **PDF audit report** from `/pech-report` includes: session total + forecast band, attribution pie (plugin × tier × model), L2 threshold-crossing timeline, L3 anomaly list with Opus-narrated diagnoses, L4 cache-waste breakdown, L5 delta from your rolling mean.
 
-## The Science Behind Nook
+## The Science Behind Pech
 
-Every Nook engine is built on a formal mathematical model. Full derivations in [`docs/science/README.md`](docs/science/README.md).
+Every Pech engine is built on a formal mathematical model. Full derivations in [`docs/science/README.md`](docs/science/README.md).
 
 ### Engine L1: Exponential Smoothing Forecast
 
@@ -263,11 +263,11 @@ Rolling μ and σ computed over the last 30 calls matching the same `(plugin, su
 
 Where `R`, `W`, `M` are cache read / write / miss token counts; `W_unread` is the subset of writes with no downstream read in the session; `r_input` is the input rate; `c_write = 1.25` is the cache-write modifier. Surfaces the dollar cost of prompt-cache misses as a first-class signal, not a performance-table afterthought.
 
-### Engine L5: Gauss Learning (Nook)
+### Engine L5: Gauss Learning (Pech)
 
 <p align="center"><img src="docs/assets/math/l5-accumulate.svg" alt="mu_{n+1} = (1 - alpha) · mu_n + alpha · y_bar_session, alpha = 0.05"></p>
 
-Slow accumulator: one noisy session barely moves learned μ and σ. Update runs at PreCompact per `(plugin, skill, agent_tier)` attribution key. Persisted in `state/learnings.json` with Allay-A4 atomic serialization (write-to-tmp + fsync + rename). Exported to `shared/learnings.json` under the `nook` section so peer plugins can read Nook's knowledge for their own cost-aware judgments.
+Slow accumulator: one noisy session barely moves learned μ and σ. Update runs at PreCompact per `(plugin, skill, agent_tier)` attribution key. Persisted in `state/learnings.json` with Fae-A4 atomic serialization (write-to-tmp + fsync + rename). Exported to `shared/learnings.json` under the `pech` section so peer plugins can read Pech's knowledge for their own cost-aware judgments.
 
 ---
 
@@ -275,7 +275,7 @@ Slow accumulator: one noisy session barely moves learned μ and σ. Update runs 
 
 ## vs Everything Else
 
-| | Nook | Anthropic Console | LangSmith | Helicone | PromptLayer |
+| | Pech | Anthropic Console | LangSmith | Helicone | PromptLayer |
 |---|---|---|---|---|---|
 | Per-plugin attribution | ✓ | — | partial | partial | — |
 | Per-agent-tier attribution (Opus/Sonnet/Haiku in one chain) | ✓ | — | — | — | — |
@@ -293,7 +293,7 @@ Slow accumulator: one noisy session barely moves learned μ and σ. Update runs 
 
 ## Agent Conduct (10 Modules)
 
-Every skill inherits a reusable behavioral contract from [shared/conduct/](shared/conduct/) — loaded once into [CLAUDE.md](CLAUDE.md), applied across all plugins. This is how Claude *acts* inside Nook: deterministic, surgical, verifiable. Not a suggestion; a contract.
+Every skill inherits a reusable behavioral contract from [shared/conduct/](shared/conduct/) — loaded once into [CLAUDE.md](CLAUDE.md), applied across all plugins. This is how Claude *acts* inside Pech: deterministic, surgical, verifiable. Not a suggestion; a contract.
 
 | Module | What it governs |
 |--------|-----------------|
@@ -316,7 +316,7 @@ Interactive architecture explorer with sub-plugin diagrams, agent cards, and eve
 
 ## Acknowledgments
 
-Nook builds on foundations laid by others:
+Pech builds on foundations laid by others:
 
 - **[Claude Code](https://github.com/anthropics/claude-code)** (Anthropic) — the plugin surface this work extends.
 - **[Keep a Changelog](https://keepachangelog.com/)** — CHANGELOG convention.
@@ -328,7 +328,7 @@ Nook builds on foundations laid by others:
 
 ## Versioning & release cadence
 
-Nook follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Breaking changes land on major bumps only; the [CHANGELOG](CHANGELOG.md) flags them explicitly. Release cadence is opportunistic — tags land when accumulated fixes or features justify a cut, not on a fixed schedule. Migration notes between majors live in [docs/upgrading.md](docs/upgrading.md).
+Pech follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Breaking changes land on major bumps only; the [CHANGELOG](CHANGELOG.md) flags them explicitly. Release cadence is opportunistic — tags land when accumulated fixes or features justify a cut, not on a fixed schedule. Migration notes between majors live in [docs/upgrading.md](docs/upgrading.md).
 
 ## Contributing
 
@@ -339,11 +339,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 If you use this project in research or derivative work, please cite it:
 
 ```bibtex
-@software{nook_2026,
-  title = {Nook},
+@software{pech_2026,
+  title = {Pech},
   author = {{Klaiderman}},
   year = {2026},
-  url = {https://github.com/enchanted-plugins/nook}
+  url = {https://github.com/enchanted-plugins/pech}
 }
 ```
 
@@ -357,12 +357,12 @@ MIT — see [LICENSE](LICENSE).
 
 ## Role in the ecosystem
 
-Nook is the **cost-ledger layer** (Phase 1, pre-release) — it tallies every token attributed to a specific plugin × sub-plugin × agent tier × model via the `ENCHANTED_ATTRIBUTION` environment variable. Upstream, every peer plugin that dispatches work (Flux, Weaver, Allay, Mantis) sets this variable before the call so Nook can apportion cost honestly. Downstream, Nook emits `nook.budget.threshold.crossed` events on the enchanted-mcp bus; peer plugins subscribe and **degrade gracefully** — Flux drops to Haiku, Weaver defers polish, Allay trims context.
+Pech is the **cost-ledger layer** (Phase 1, pre-release) — it tallies every token attributed to a specific plugin × sub-plugin × agent tier × model via the `ENCHANTED_ATTRIBUTION` environment variable. Upstream, every peer plugin that dispatches work (Wixie, Sylph, Fae, Lich) sets this variable before the call so Pech can apportion cost honestly. Downstream, Pech emits `pech.budget.threshold.crossed` events on the enchanted-mcp bus; peer plugins subscribe and **degrade gracefully** — Wixie drops to Haiku, Sylph defers polish, Fae trims context.
 
-Nook does not engineer prompts (Flux's lane), score change trust (Hornet's lane), review code (Mantis's lane), or pre-emptively kill dispatches to enforce budgets (the degradation model is cooperative, not coercive). It keeps the ledger honest.
+Pech does not engineer prompts (Wixie's lane), score change trust (Raven's lane), review code (Lich's lane), or pre-emptively kill dispatches to enforce budgets (the degradation model is cooperative, not coercive). It keeps the ledger honest.
 
 See [docs/ecosystem.md § Data Flow Between Plugins](docs/ecosystem.md#data-flow-between-plugins) for the full map.
 
 ---
 
-Repo: https://github.com/enchanted-plugins/nook
+Repo: https://github.com/enchanted-plugins/pech

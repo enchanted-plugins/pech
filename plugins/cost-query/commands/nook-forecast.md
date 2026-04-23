@@ -2,18 +2,18 @@
 description: L1 Exponential Smoothing forecast for session/day/month spend with ±2σ confidence band.
 ---
 
-# /nook-forecast
+# /pech-forecast
 
 Projects end-of-scope spend via L1 Exponential Smoothing over the current ledger. Always reports the ±2σ band — point estimates without bands are banned.
 
 ## Usage
 
 ```
-/nook-forecast              # end-of-session (default)
-/nook-forecast --session
-/nook-forecast --day
-/nook-forecast --month
-/nook-forecast --json       # machine-readable
+/pech-forecast              # end-of-session (default)
+/pech-forecast --session
+/pech-forecast --day
+/pech-forecast --month
+/pech-forecast --json       # machine-readable
 ```
 
 ## Arguments
@@ -27,7 +27,7 @@ Projects end-of-scope spend via L1 Exponential Smoothing over the current ledger
 ## Example output
 
 ```
-Nook — forecast (session horizon)
+Pech — forecast (session horizon)
 ─────────────────────────────────────────────────────────────
 Point estimate:                                       $1.87
 ±2σ band:                                   [$1.42, $2.32]
