@@ -38,7 +38,7 @@ flowchart TB
         evt1["<div style='text-align:center;line-height:1.7;padding:2px 4px'>pech.budget.<br/>threshold.crossed<br/><small style='color:#6e7681;letter-spacing:1px'>50/80/100%</small></div>"] --> evt2["<div style='text-align:center;line-height:1.7;padding:2px 4px'>pech.anomaly.<br/>detected<br/><small style='color:#6e7681;letter-spacing:1px'>|z|&nbsp;&gt;&nbsp;3</small></div>"] --> evt3["<div style='text-align:center;line-height:1.7;padding:2px 4px'>pech.session.<br/>cost.finalized<br/><small style='color:#6e7681;letter-spacing:1px'>at&nbsp;Stop</small></div>"]
     end
 
-    Peers["<div style='text-align:center;min-width:940px;line-height:1.8;padding:6px 10px'><b style='letter-spacing:1.5px;color:#79c0ff'>PEER&nbsp;PLUGINS&nbsp;DEGRADE&nbsp;GRACEFULLY</b><br/><em style='color:#8b949e;font-size:13px;font-weight:400'>Wixie → Haiku for validators &nbsp;·&nbsp; Sylph → defer PR polish &nbsp;·&nbsp; Fae → trim context aggressively</em></div>"]
+    Peers["<div style='text-align:center;min-width:940px;line-height:1.8;padding:6px 10px'><b style='letter-spacing:1.5px;color:#79c0ff'>PEER&nbsp;PLUGINS&nbsp;DEGRADE&nbsp;GRACEFULLY</b><br/><em style='color:#8b949e;font-size:13px;font-weight:400'>Wixie → Haiku for validators &nbsp;·&nbsp; Sylph → defer PR polish &nbsp;·&nbsp; Emu → trim context aggressively</em></div>"]
 
     Session --> Observe
     Observe --> Guard
