@@ -20,6 +20,6 @@ Pech has not shipped a public release yet. The plugin is planned for Phase 1 of 
 - Named engines L1 through L5 — Exponential Smoothing as the defining engine for budget forecasting; Budget Boundary for per-project spend gates.
 - Integration with Emu's runway algorithm for token accounting.
 
-Track progress in [ROADMAP.md](docs/ROADMAP.md) and the [ecosystem map](https://github.com/enchanted-plugins/wixie/blob/main/docs/ecosystem.md).
+Track progress in [ROADMAP.md](docs/ROADMAP.md) and the [ecosystem map](docs/ecosystem.md).
 
 [Unreleased]: https://github.com/enchanted-plugins/pech/commits/main

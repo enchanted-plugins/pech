@@ -208,7 +208,7 @@ Source: [docs/assets/state-flow.mmd](docs/assets/state-flow.mmd) · Regeneration
 
 ## Roadmap
 
-Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](https://github.com/enchanted-plugins/wixie/blob/main/docs/ecosystem.md). For upcoming work specific to Pech, see issues tagged [roadmap](https://github.com/enchanted-plugins/pech/labels/roadmap).
+Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](docs/ecosystem.md). For upcoming work specific to Pech, see issues tagged [roadmap](https://github.com/enchanted-plugins/pech/labels/roadmap).
 
 ```
 plugins/cost-tracker/state/
