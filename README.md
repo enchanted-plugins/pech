@@ -21,7 +21,7 @@ The cost ledger for AI-assisted development that learns from every session.
 
 ## TL;DR
 
-**In plain English:** You have no idea which plugin, which model tier, or which caching decision ate your monthly AI budget — the console just shows one number and you're left guessing.
+**In plain English:** Your monthly AI bill is one big number. Which plugin? Which model? Which prompt? Pech itemizes every dollar by tier and cache hit so you can fix the leak instead of guessing.
 
 **Technically:** L1 Exponential Smoothing (α=0.3) forecasts session, daily, and monthly spend with a ±2σ confidence band; L2 Budget Boundary Detection fires `pech.budget.threshold.crossed` events at 50/80/100% per scope so peer plugins can degrade before the ceiling is hit; L3 Z-Score anomaly detection flags per-(attribution tuple) spikes at `|y − μ| > 3σ` over a 30-call rolling window. Every ledger row carries the `ENCHANTED_ATTRIBUTION` tuple (plugin, sub-plugin, skill, agent_tier, model) set at dispatch time, making per-tier cost answerable rather than opaque.
 
