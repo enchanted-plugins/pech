@@ -1,7 +1,7 @@
 ---
 name: generate-report
 description: >
-  Aggregates state across all 5 Pech sub-plugins and renders a dark-themed single-page
+  Aggregates state across all 7 Pech sub-plugins and renders a dark-themed single-page
   PDF cost audit. Invokes anomaly-narrator agent (Opus) once per anomaly for
   human-readable diagnoses; invokes forecaster agent (Sonnet) for the forecast block.
   Use when: /pech-report slash command fires. Do not use for live session display (see

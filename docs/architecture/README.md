@@ -6,7 +6,7 @@ The generator at [generate.py](generate.py) reads the source-of-truth (`plugins/
 
 | File | Purpose |
 |------|---------|
-| `highlevel.mmd` | System diagram — Pech's 5 sub-plugins + data flow |
+| `highlevel.mmd` | System diagram — Pech's 7 sub-plugins + data flow |
 | `hooks.mmd` | Hook lifecycle per sub-plugin (SessionStart / PostToolUse / PreCompact / Stop) |
 | `lifecycle.mmd` | Session flow — SessionStart rate-card load → PostToolUse ledger/budget → Stop finalization |
 | `dataflow.mmd` | Cross-plugin flow via enchanted-mcp events (emu → pech → peer degradation) |

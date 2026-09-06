@@ -71,10 +71,10 @@ fi
 cat <<'EOF'
 
 ─────────────────────────────────────────────────────────────────────────
-  Pech ships as a 5-sub-plugin marketplace. Each sub-plugin owns one
+  Pech ships as a 7-sub-plugin marketplace. Each sub-plugin owns one
   named engine (L1–L5) OR one orthogonal concern (rate-card-keeper,
-  cost-query). The `full` meta-plugin lists all five as dependencies so
-  one install pulls in the whole chain.
+  cost-query, rate-limiter, rate-shield). The `full` meta-plugin lists
+  all seven as dependencies so one install pulls in the whole chain.
 ─────────────────────────────────────────────────────────────────────────
 
   Finish in Claude Code with TWO commands:
@@ -82,11 +82,11 @@ cat <<'EOF'
     /plugin marketplace add enchanter-ai/pech
     /plugin install full@pech
 
-  That installs all 5 sub-plugins via dependency resolution. To cherry-pick
+  That installs all 7 sub-plugins via dependency resolution. To cherry-pick
   a single sub-plugin instead, use e.g. `/plugin install cost-tracker@pech`.
 
   Verify with:   /plugin list
-  Expected:      full + 5 sub-plugins under the pech marketplace.
+  Expected:      full + 7 sub-plugins under the pech marketplace.
 
   Once installed, Pech is silent by default — every tool call is observed,
   ledgered, and forecasted without interrupting your flow. The bus fires
